@@ -42,55 +42,136 @@ adversary(2,1).
 adversary(2,11).
 adversary(22,1).
 adversary(22,11).
-/*Jogadores Normais*/
-possivelCapture(VTab,X-Y,NTab,NX-Y,Jogador):-%Capturar em X menos
-	findPiece(VTab,X-Y,_P),
-	_P = Jogador,
+isKing(22).
+isKing(11).
+/*Direction
+x- 1
+x+ 2
+y- 3
+y+ 4
+*/
+possivelCaptureKing(OTab, X-Y, NTab, NX-Y, Player, Direction):-%Capturar em X menos
+	Direction = 1,
+	findPiece(OTab, X-Y, Player),
 	X1 is X-1,
-	findPiece(VTab,X1-Y,_A),
-	adversary(Jogador,_A),
+	findPiece(OTab, X1-Y, _A),
+	adversary(Player, _A),
 	NX is X-2,
-	findPiece(VTab,NX-Y,_L),
-	_L is 0, %livre
-	putPiece(VTab,_I,X-Y,0),
-	putPiece(_I,_I1,X1-Y,0),
-	putPiece(_I1,NTab,NX-Y,Jogador).
-possivelCapture(VTab,X-Y,NTab,NX-Y,Jogador):-%Capturar em X mais
-	findPiece(VTab,X-Y,_P),
-	_P = Jogador,
+	findPiece(OTab, NX-Y, 0),
+	putPiece(OTab, _I, X-Y, 0),
+	putPiece(_I, _I1, X1-Y, 0),
+	putPiece(_I1, NTab, NX-Y, Player).
+possivelCaptureKing(OTab, X-Y, NTab, NX-Y, Player, Direction):-%Capturar em X mais
+	Direction = 2,
+	findPiece(OTab, X-Y, Player),
 	X1 is X+1,
-	findPiece(VTab,X1-Y,_A),
-	adversary(Jogador,_A),
+	findPiece(OTab, X1-Y, _A),
+	adversary(Player, _A),
 	NX is X+2,
-	findPiece(VTab,NX-Y,_L),
-	_L is 0, %livre
-	putPiece(VTab,_I,X-Y,0),
-	putPiece(_I,_I1,X1-Y,0),
-	putPiece(_I1,NTab,NX-Y,Jogador).
-possivelCapture(VTab,X-Y,NTab,X-NY,Jogador):-%Capturar em Y mais
-	findPiece(VTab,X-Y,_P),
-	_P = Jogador,
+	findPiece(OTab, NX-Y, 0),
+	putPiece(OTab, _I, X-Y, 0),
+	putPiece(_I, _I1, X1-Y, 0),
+	putPiece(_I1, NTab, NX-Y, Player).
+possivelCaptureKing(OTab, X-Y, NTab, X-NY, Player, Direction):-%Capturar em Y mais
+	Direction = 4,
+	findPiece(OTab, X-Y, Player),
 	Y1 is Y+1,
-	findPiece(VTab,X-Y1,_A),
-	adversary(Jogador,_A),
+	findPiece(OTab, X-Y1, _A),
+	adversary(Player, _A),
 	NY is Y+2,
-	findPiece(VTab,X-NY,_L),
-	_L is 0, %livre
-	putPiece(VTab,_I,X-Y,0),
-	putPiece(_I,_I1,X-Y1,0),
-	putPiece(_I1,NTab,X-NY,Jogador).
-possivelCapture(VTab,X-Y,NTab,X-NY,Jogador):-%Capturar em Y menos
-	findPiece(VTab,X-Y,_P),
-	_P = Jogador,
+	findPiece(OTab, X-NY, 0),
+	putPiece(OTab, _I, X-Y, 0),
+	putPiece(_I, _I1, X-Y1, 0),
+	putPiece(_I1, NTab, X-NY, Player).
+possivelCaptureKing(OTab, X-Y, NTab, X-NY, Player, Direction):-%Capturar em Y menos
+	Direction = 3,
+	findPiece(OTab, X-Y, Player),
 	Y1 is Y-1,
-	findPiece(VTab,X-Y1,_A),
-	adversary(Jogador,_A),
+	findPiece(OTab, X-Y1, _A),
+	adversary(Player, _A),
 	NY is Y-2,
-	findPiece(VTab,X-NY,_L),
-	_L is 0, %livre
-	putPiece(VTab,_I,X-Y,0),
+	findPiece(OTab, X-NY, 0),
+	putPiece(OTab, _I, X-Y, 0),
+	putPiece(_I, _I1, X-Y1, 0),
+	putPiece(_I1, NTab, X-NY, Player).
+possivelCaptureKing(OTab, X-Y, NTab, X-NY, Player, Direction):-%Capturar em Y menos
+	Direction = 3,
+	findPiece(OTab, X-Y, Player),
+	Y1 is Y-1,
+	findPiece(OTab, X-Y1, 0),
+	putPiece(OTab, _I, X-Y, 0),
+	putPiece(_I, _N, X-Y1, Player),
+	possivelCaptureKing(_N, X-Y1, NTab, X-NY, Player, Direction).
+possivelCaptureKing(OTab, X-Y, NTab, X-NY, Player, Direction):-%Capturar em Y mais
+	Direction = 4,
+	findPiece(OTab, X-Y, Player),
+	Y1 is Y+1,
+	findPiece(OTab, X-Y1, 0),
+	putPiece(OTab, _I, X-Y, 0),
+	putPiece(_I, _N, X-Y1, Player),
+	possivelCaptureKing(_N, X-Y1, NTab, X-NY, Player, Direction).
+possivelCaptureKing(OTab, X-Y, NTab, NX-Y, Player, Direction):-%Capturar em X menos
+	Direction = 1,
+	findPiece(OTab, X-Y, Player),
+	X1 is X-1,
+	findPiece(OTab, X1-Y, 0),
+	putPiece(OTab, _I, X-Y, 0),
+	putPiece(_I, P, X1-Y, Player),
+	possivelCaptureKing(P, X1-Y, NTab, NX-Y, Player, Direction).
+possivelCaptureKing(OTab, X-Y, NTab, NX-Y, Player, Direction):-%Capturar em X mais
+	Direction = 2,
+	findPiece(OTab, X-Y, Player),
+	X1 is X+1,
+	findPiece(OTab, X1-Y, 0),
+	putPiece(OTab, _I, X-Y, 0),
+	putPiece(_I, _N, X1-Y, Player),
+	possivelCaptureKing(_N, X1-Y, NTab, NX-Y, Player, Direction).
+
+possivelCapture(OTab,X-Y,NTab,NX-NY,Player):-
+	isKing(Player),!,
+	possivelCaptureKing(OTab,X-Y,NTab,NX-NY,Player,Direction).
+/*Playeres Normais*/
+possivelCapture(OTab,X-Y,NTab,NX-Y,Player):-%Capturar em X menos
+	findPiece(OTab,X-Y,Player),
+	X1 is X-1,
+	findPiece(OTab,X1-Y,_A),
+	adversary(Player,_A),
+	NX is X-2,
+	findPiece(OTab,NX-Y,0),
+	putPiece(OTab,_I,X-Y,0),
+	putPiece(_I,_I1,X1-Y,0),
+	putPiece(_I1,NTab,NX-Y,Player).
+possivelCapture(OTab,X-Y,NTab,NX-Y,Player):-%Capturar em X mais
+	findPiece(OTab,X-Y,Player),
+	X1 is X+1,
+	findPiece(OTab,X1-Y,_A),
+	adversary(Player,_A),
+	NX is X+2,
+	findPiece(OTab,NX-Y,0),
+	putPiece(OTab,_I,X-Y,0),
+	putPiece(_I,_I1,X1-Y,0),
+	putPiece(_I1,NTab,NX-Y,Player).
+possivelCapture(OTab,X-Y,NTab,X-NY,Player):-%Capturar em Y mais
+	findPiece(OTab,X-Y,Player),
+	Y1 is Y+1,
+	findPiece(OTab,X-Y1,_A),
+	adversary(Player,_A),
+	NY is Y+2,
+	findPiece(OTab,X-NY,0),
+	putPiece(OTab,_I,X-Y,0),
 	putPiece(_I,_I1,X-Y1,0),
-	putPiece(_I1,NTab,X-NY,Jogador).
+	putPiece(_I1,NTab,X-NY,Player).
+possivelCapture(OTab,X-Y,NTab,X-NY,Player):-%Capturar em Y menos
+	findPiece(OTab,X-Y,Player),
+	Y1 is Y-1,
+	findPiece(OTab,X-Y1,_A),
+	adversary(Player,_A),
+	NY is Y-2,
+	findPiece(OTab,X-NY,0),
+	putPiece(OTab,_I,X-Y,0),
+	putPiece(_I,_I1,X-Y1,0),
+	putPiece(_I1,NTab,X-NY,Player).
+/*END*/
 
 /**Predicado para encontrar pecas
  */
@@ -109,7 +190,15 @@ putPieceLin([_R|VLine],[_R|NLine],Y,Piece):-
 putLinTab([_|VTab],[Lin|VTab],1,Lin).
 putLinTab([_R|VTab],[_R|NTab],X,Lin):-
 	X1 is (X-1),
-	putLinTab(VTab,NTab,X1,Lin).	
+	putLinTab(VTab,NTab,X1,Lin).
+putPiece(OTab,NTab,X-Y,Piece):-
+	X < 1, !, fail.
+putPiece(OTab,NTab,X-Y,Piece):-
+	X > 8, !, fail.
+putPiece(OTab,NTab,X-Y,Piece):-
+	Y < 1, !, fail.
+putPiece(OTab,NTab,X-Y,Piece):-
+	Y > 8, !, fail. 	
 putPiece(VTab,NTab,X-Y,Piece):-
 	nth1(X,VTab,VLinha),
 	putPieceLin(VLinha,NLinha,Y,Piece),
@@ -148,36 +237,6 @@ captureNumber(OTab,X-Y,Num,Player):-
 	possivelCapture(OTab,X-Y,NTab,NX-NY,Player),
 	captureNumber(NTab,NX-NY,NNum,Player),
 	Num is NNum+1.
-/*
-captureNumber(VTab,X-Y,Num,Jogador):-
-	captureNumAux(VTab,X-Y,Num,Jogador,0).
-
-captureNumberAux(VTab,X-Y,Acc,Jogador,Acc):-
-	\+possivelCapture(VTab,X-Y,NTab,NX-NY,Jogador).
-
-captureNumAux(VTab,X-Y,Num,Jogador,Acc):-
-	possivelCapture(VTab,X-Y,NTab,NX-NY,Jogador),
-	Acc1 is Acc+1,
-	captureNumAux(NTab,NX-NY,Num,Jogador,Acc1).
-/*
-captureNumber(VTab,X-Y,Num,Jogador):-
-	captureNumberAUX(VTab,X-Y,Num,Jogador,NTab,NX-NY).
-
-captureNumberAUX(OTab,X-Y,Num,Jogador,NTab,NX-NY):-
-	showBoard(OTab),nl,
-	ith(possivelCapture(OTab,X-Y,NTab,NX-NY,Jogador),
-		(captureNumberAUX(NTab,NX-NY,NNum,Jogador,NNTab,NNX-NNY),Num is NNum + 1),
-		(Num is 0)).
-
-ith(If,Them,_Else):-
-	If,
-	!,
-	Them.
-ith(_If,_Them,Else):- 
-	Else.
-
-*/
-
 
 
 
