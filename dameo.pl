@@ -160,13 +160,13 @@ captureNumber(VTab,X-Y,Num,Jogador):-
 	captureNumberAUX(VTab,X-Y,Num,Jogador,NTab,NX-NY).
 
 captureNumberAUX(VTab,X-Y,Num,Jogador,NTab,NX-NY):-
+	showBoard(VTab),
 	ith(possivelCapture(VTab,X-Y,NTab,NX-NY,Jogador),
-		(captureNumberAUX(NTan,NX-NY,NNum,Jogador,NNTab,NNX-NNY),Num is NNum + 1), (Num is 0)).
+		(captureNumberAUX(NTan,NX-NY,NNum,Jogador,NNTab,NNX-NNY),Num is NNum + 1),
+		(Num is 0)).
 
 ith(If,Them,_Else):-
-	notrace,
 	If,
-	trace,
 	!,
 	Them.
 ith(_If,_Them,Else):- 
