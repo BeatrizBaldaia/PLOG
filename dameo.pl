@@ -26,7 +26,11 @@ captureNumber([[0,0,0,0,0,0,0,0],[0,1,0,22,0,0,0,0],[0,0,0,0,0,0,1,0],[1,0,0,0,0
 
 putPiece([[0,0,0,0,0,0,0,0],[0,1,0,22,0,0,0,0],[0,0,0,0,0,0,1,0],[1,0,0,0,0,0,0,0],[0,0,0,0,0,2,1,0],[0,11,2,0,0,0,2,1],[0,0,0,2,0,0,0,0],[0,0,0,0,2,0,0,0]],N,8-8,22),showBoard(N).
 
-findall(Num-X-Y,captureNumber([[0,0,0,0,0,0,0,0],[0,1,0,22,0,0,0,0],[0,0,0,0,0,0,1,0],[1,0,0,0,0,0,0,0],[0,0,0,0,0,2,1,0],[0,11,2,0,0,0,2,1],[0,0,0,2,0,0,0,0],[0,0,0,0,2,0,0,0]],6-7,Num,2),L).
+findall(Num-X-Y,captureNumber([[0,0,0,0,0,0,0,0],[0,1,0,22,0,0,0,0],[0,0,0,0,0,0,1,0],[1,0,0,0,0,0,0,0],[0,0,0,0,0,2,1,0],[0,11,2,0,0,0,2,1],[0,0,0,2,0,0,0,0],[0,0,0,0,2,0,0,0]],X-Y,Num,2),L).
+
+
+
+captureNumber([[0,0,0,0,0,0,0,0],[0,2,1,0,1,0,0,0],[0,1,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0]],X-Y,Num,2). 
 
 */
 %adversary(Jogador,Adversario).
@@ -137,14 +141,14 @@ showPiece(X):- X = 11,
 showPiece(X):- X = 22,
 	write('&').
 /*END*/
-/*captureNumber(VTab,X-Y,0,Jogador):-
-	\+possivelCapture(VTab,X-Y,NTab,NX-NY,Jogador).
+captureNumber(OTab,X-Y,0,Player):-
+	\+possivelCapture(OTab,X-Y,NTab,NX-NY,Player).
 
-captureNumber(VTab,X-Y,Num,Jogador):-
-	possivelCapture(VTab,X-Y,NTab,NX-NY,Jogador),
-	%captureNumber(NTan,NX-NY,NNum,Jogador),
-	Num is 1.
-
+captureNumber(OTab,X-Y,Num,Player):-
+	possivelCapture(OTab,X-Y,NTab,NX-NY,Player),
+	captureNumber(NTab,NX-NY,NNum,Player),
+	Num is NNum+1.
+/*
 captureNumber(VTab,X-Y,Num,Jogador):-
 	captureNumAux(VTab,X-Y,Num,Jogador,0).
 
@@ -155,14 +159,14 @@ captureNumAux(VTab,X-Y,Num,Jogador,Acc):-
 	possivelCapture(VTab,X-Y,NTab,NX-NY,Jogador),
 	Acc1 is Acc+1,
 	captureNumAux(NTab,NX-NY,Num,Jogador,Acc1).
-*/
+/*
 captureNumber(VTab,X-Y,Num,Jogador):-
 	captureNumberAUX(VTab,X-Y,Num,Jogador,NTab,NX-NY).
 
-captureNumberAUX(VTab,X-Y,Num,Jogador,NTab,NX-NY):-
-	showBoard(VTab),
-	ith(possivelCapture(VTab,X-Y,NTab,NX-NY,Jogador),
-		(captureNumberAUX(NTan,NX-NY,NNum,Jogador,NNTab,NNX-NNY),Num is NNum + 1),
+captureNumberAUX(OTab,X-Y,Num,Jogador,NTab,NX-NY):-
+	showBoard(OTab),nl,
+	ith(possivelCapture(OTab,X-Y,NTab,NX-NY,Jogador),
+		(captureNumberAUX(NTab,NX-NY,NNum,Jogador,NNTab,NNX-NNY),Num is NNum + 1),
 		(Num is 0)).
 
 ith(If,Them,_Else):-
@@ -172,7 +176,7 @@ ith(If,Them,_Else):-
 ith(_If,_Them,Else):- 
 	Else.
 
-
+*/
 
 
 
