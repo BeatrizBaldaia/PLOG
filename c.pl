@@ -23,6 +23,29 @@ gameOver(OTab, Player):- findPiece(OTab, _X-_Y, Player), validMoves(OTab, Player
 gameOver(_OTab, _Player).
 validMoves(OTab, Player, Moves).%TODO Errado.
 
+play:-
+	state(InitialPlayer, InicialTab),
+	assert(state(InitialPlayer, InicialTab)),
+	repeat,
+		retract(state(Player, Tab)),
+		once(playGame(Player, OTab, NPlayer, NTab)),
+		assert(state(NPlayer, NTab),
+		gameOver(NTab,NPlayer),
+		showResult(NTab,NPlayer).
+playGame(Player, OTab, NPlayer, NTab):-
+	validMoves(OTab, Player, Moves),
+	bestMove(Player, Moves, Best),
+	move(OTab, Best, NTab),
+	nextPlayer(Player, NPlayer).
+playGame(Player, OTab, NPlayer, NTab):-
+	validMoves(OTab, Player, Moves),
+	askMove(Player, OTab, Move),%	member(Move, Moves),
+	move(OTab, Move, NTab),
+	nextPlayer(Player, NPlayer).
+
+
+
+/**COMPLETOS*/
 promotedToKing(OTab, NTab):-
 	promotedToKing1(OTab, _I),
 	promotedToKing2(_I, NTab).
