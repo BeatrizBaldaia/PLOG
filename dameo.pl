@@ -33,6 +33,25 @@ findall(Num-X-Y,captureNumber([[0,0,0,0,0,0,0,0],[0,1,0,22,0,0,0,0],[0,0,0,0,0,0
 captureNumber([[0,0,0,0,0,0,0,0],[0,2,1,0,1,0,0,0],[0,1,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0]],X-Y,Num,2). 
 
 */
+/*Predicado para promover homens*/
+promotedToKing(OTab, NTab):-
+	promotedToKing1(OTab, _I),
+	promotedToKing2(_I, NTab).
+
+promotedToKing1(NTab, NTab):-
+	\+findPiece(NTab, 8-Y, 1).
+promotedToKing1(OTab, NTab):-
+	findPiece(OTab, 8-Y, 1),
+	putPiece(OTab, _I, 8-Y, 11),
+	promotedToKing1(_I, NTab).
+
+promotedToKing2(OTab, OTab):-
+	\+findPiece(OTab, 1-Y, 2).
+promotedToKing2(OTab, NTab):-
+	findPiece(OTab, 1-Y, 2),
+	putPiece(OTab, _I, 1-Y, 22),
+	promotedToKing2(_I, NTab).
+/*END*/
 %adversary(Jogador,Adversario).
 adversary(1,2).
 adversary(1,22).
