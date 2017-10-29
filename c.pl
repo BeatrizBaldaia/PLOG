@@ -6,8 +6,8 @@
  2 - pretas - @
  22 - rei - &
 
- Tabuleiro Inicial 
- 
+ Tabuleiro Inicial
+
 [[1,1,1,1,1,1,1,1],[0,1,1,1,1,1,1,0],[0,0,1,1,1,1,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,2,2,2,2,0,0],[0,2,2,2,2,2,2,0],[2,2,2,2,2,2,2,2]]
 
 Exemplo:
@@ -19,28 +19,28 @@ gameOver([[0,0,0,0,0,0,0,0],[0,1,0,0,0,0,0,0],[0,0,0,0,0,0,1,0],[1,0,0,0,0,0,0,0
 X = [[0,2,0,22,0,2,0,1],[0,1,0,22,0,0,0,0],[0,0,0,0,0,0,1,0],[1,0,0,0,0,0,0,0],[0,0,0,0,0,2,1,0],[0,11,2,0,0,0,2,1],[0,0,0,2,0,0,0,0],[0,0,1,0,2,0,1,11]],showBoard(X),promotedToKing(X,N),showBoard(N).
 promotedToKing([[0,2,0,22,0,2,0,1],[0,1,0,22,0,0,0,0],[0,0,0,0,0,0,1,0],[1,0,0,0,0,0,0,0],[0,0,0,0,0,2,1,0],[0,11,2,0,0,0,2,1],[0,0,0,2,0,0,0,0],[0,0,1,0,2,0,1,11]],N),showBoard(N).
 */
-gameOver(OTab, Player):- findPiece(OTab, _X-_Y, Player), validMoves(OTab, Player, Moves), !, fail.
-gameOver(_OTab, _Player).
-validMoves(OTab, Player, Moves).%TODO Errado.
+gameOver(OldBoard, Player):- findPiece(OldBoard, _X-_Y, Player), validMoves(OldBoard, Player, Moves), !, fail.
+gameOver(_OldBoard, _Player).
+validMoves(OldBoard, Player, Moves).%TODO Errado.
 
-promotedToKing(OTab, NTab):-
-	promotedToKing1(OTab, _I),
-	promotedToKing2(_I, NTab).
+promotedToKing(OldBoard, NewBoard):-
+	promotedToKing1(OldBoard, _UpdatedBoard),
+	promotedToKing2(_UpdatedBoard, NewBoard).
 
-promotedToKing1(NTab, NTab):-
-	\+findPiece(NTab, 8-Y, 1).
-promotedToKing1(OTab, NTab):-
-	findPiece(OTab, 8-Y, 1),
-	putPiece(OTab, _I, 8-Y, 11),
-	promotedToKing1(_I, NTab).
+promotedToKing1(NewBoard, NewBoard):-
+	\+findPiece(NewBoard, 8-Y, 1).
+promotedToKing1(OldBoard, NewBoard):-
+	findPiece(OldBoard, 8-Y, 1),
+	putPiece(OldBoard, _UpdatedBoard, 8-Y, 11),
+	promotedToKing1(_UpdatedBoard, NewBoard).
 
-promotedToKing2(OTab, OTab):-
-	\+findPiece(OTab, 1-Y, 2).
-promotedToKing2(OTab, NTab):-
-	findPiece(OTab, 1-Y, 2),
-	putPiece(OTab, _I, 1-Y, 22),
-	promotedToKing2(_I, NTab).
-
+promotedToKing2(OldBoard, OldBoard):-
+	\+findPiece(OldBoard, 1-Y, 2).
+promotedToKing2(OldBoard, NewBoard):-
+	findPiece(OldBoard, 1-Y, 2),
+	putPiece(OldBoard, _UpdatedBoard, 1-Y, 22),
+	promotedToKing2(_UpdatedBoard, NewBoard).
+/*END*/
 %adversary(Jogador,Adversario).
 adversary(1,2).
 adversary(1,22).
@@ -58,128 +58,127 @@ x+ 2
 y- 3
 y+ 4
 */
-/*Prdicado para Encontrar capturas*/
-possivelCaptureKing(OTab, X-Y, NTab, NX-Y, Player, Direction):-%Capturar em X menos
+possibleCaptureKing(OldBoard, X-Y, NewBoard, NewX-Y, Player, Direction):-%Capturar em X menos
 	Direction = 1,
-	findPiece(OTab, X-Y, Player),
-	X1 is X-1,
-	findPiece(OTab, X1-Y, _A),
+	findPiece(OldBoard, X-Y, Player),
+	X1 is X - 1,
+	findPiece(OldBoard, X1-Y, _A),
 	adversary(Player, _A),
-	NX is X-2,
-	findPiece(OTab, NX-Y, 0),
-	putPiece(OTab, _I, X-Y, 0),
-	putPiece(_I, _I1, X1-Y, 0),
-	putPiece(_I1, NTab, NX-Y, Player).
-possivelCaptureKing(OTab, X-Y, NTab, NX-Y, Player, Direction):-%Capturar em X mais
+	NewX is X - 2,
+	findPiece(OldBoard, NewX-Y, 0),
+	putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
+	putPiece(_UpdatedBoard, _UpdatedBoard2, X1-Y, 0),
+	putPiece(_UpdatedBoard2, NewBoard, NewX-Y, Player).
+possibleCaptureKing(OldBoard, X-Y, NewBoard, NewX-Y, Player, Direction):-%Capturar em X mais
 	Direction = 2,
-	findPiece(OTab, X-Y, Player),
-	X1 is X+1,
-	findPiece(OTab, X1-Y, _A),
+	findPiece(OldBoard, X-Y, Player),
+	X1 is X + 1,
+	findPiece(OldBoard, X1-Y, _A),
 	adversary(Player, _A),
-	NX is X+2,
-	findPiece(OTab, NX-Y, 0),
-	putPiece(OTab, _I, X-Y, 0),
-	putPiece(_I, _I1, X1-Y, 0),
-	putPiece(_I1, NTab, NX-Y, Player).
-possivelCaptureKing(OTab, X-Y, NTab, X-NY, Player, Direction):-%Capturar em Y mais
+	NewX is X + 2,
+	findPiece(OldBoard, NewX-Y, 0),
+	putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
+	putPiece(_UpdatedBoard, _UpdatedBoard2, X1-Y, 0),
+	putPiece(_UpdatedBoard2, NewBoard, NewX-Y, Player).
+possibleCaptureKing(OldBoard, X-Y, NewBoard, X-NewY, Player, Direction):-%Capturar em Y mais
 	Direction = 4,
-	findPiece(OTab, X-Y, Player),
-	Y1 is Y+1,
-	findPiece(OTab, X-Y1, _A),
+	findPiece(OldBoard, X-Y, Player),
+	Y1 is Y + 1,
+	findPiece(OldBoard, X-Y1, _A),
 	adversary(Player, _A),
-	NY is Y+2,
-	findPiece(OTab, X-NY, 0),
-	putPiece(OTab, _I, X-Y, 0),
-	putPiece(_I, _I1, X-Y1, 0),
-	putPiece(_I1, NTab, X-NY, Player).
-possivelCaptureKing(OTab, X-Y, NTab, X-NY, Player, Direction):-%Capturar em Y menos
+	NewY is Y + 2,
+	findPiece(OldBoard, X-NewY, 0),
+	putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
+	putPiece(_UpdatedBoard, _UpdatedBoard2, X-Y1, 0),
+	putPiece(_UpdatedBoard2, NewBoard, X-NewY, Player).
+possibleCaptureKing(OldBoard, X-Y, NewBoard, X-NewY, Player, Direction):-%Capturar em Y menos
 	Direction = 3,
-	findPiece(OTab, X-Y, Player),
-	Y1 is Y-1,
-	findPiece(OTab, X-Y1, _A),
+	findPiece(OldBoard, X-Y, Player),
+	Y1 is Y - 1,
+	findPiece(OldBoard, X-Y1, _A),
 	adversary(Player, _A),
-	NY is Y-2,
-	findPiece(OTab, X-NY, 0),
-	putPiece(OTab, _I, X-Y, 0),
-	putPiece(_I, _I1, X-Y1, 0),
-	putPiece(_I1, NTab, X-NY, Player).
-possivelCaptureKing(OTab, X-Y, NTab, X-NY, Player, Direction):-%Capturar em Y menos
+	NewY is Y - 2,
+	findPiece(OldBoard, X-NewY, 0),
+	putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
+	putPiece(_UpdatedBoard, _UpdatedBoard2, X-Y1, 0),
+	putPiece(_UpdatedBoard2, NewBoard, X-NewY, Player).
+possibleCaptureKing(OldBoard, X-Y, NewBoard, X-NewY, Player, Direction):-%Capturar em Y menos
 	Direction = 3,
-	findPiece(OTab, X-Y, Player),
+	findPiece(OldBoard, X-Y, Player),
 	Y1 is Y-1,
-	findPiece(OTab, X-Y1, 0),
-	putPiece(OTab, _I, X-Y, 0),
-	putPiece(_I, _N, X-Y1, Player),
-	possivelCaptureKing(_N, X-Y1, NTab, X-NY, Player, Direction).
-possivelCaptureKing(OTab, X-Y, NTab, X-NY, Player, Direction):-%Capturar em Y mais
+	findPiece(OldBoard, X-Y1, 0),
+	putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
+	putPiece(_UpdatedBoard, _N, X-Y1, Player),
+	possibleCaptureKing(_N, X-Y1, NewBoard, X-NewY, Player, Direction).
+possibleCaptureKing(OldBoard, X-Y, NewBoard, X-NewY, Player, Direction):-%Capturar em Y mais
 	Direction = 4,
-	findPiece(OTab, X-Y, Player),
-	Y1 is Y+1,
-	findPiece(OTab, X-Y1, 0),
-	putPiece(OTab, _I, X-Y, 0),
-	putPiece(_I, _N, X-Y1, Player),
-	possivelCaptureKing(_N, X-Y1, NTab, X-NY, Player, Direction).
-possivelCaptureKing(OTab, X-Y, NTab, NX-Y, Player, Direction):-%Capturar em X menos
+	findPiece(OldBoard, X-Y, Player),
+	Y1 is Y + 1,
+	findPiece(OldBoard, X-Y1, 0),
+	putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
+	putPiece(_UpdatedBoard, _N, X-Y1, Player),
+	possibleCaptureKing(_N, X-Y1, NewBoard, X-NewY, Player, Direction).
+possibleCaptureKing(OldBoard, X-Y, NewBoard, NewX-Y, Player, Direction):-%Capturar em X menos
 	Direction = 1,
-	findPiece(OTab, X-Y, Player),
-	X1 is X-1,
-	findPiece(OTab, X1-Y, 0),
-	putPiece(OTab, _I, X-Y, 0),
-	putPiece(_I, P, X1-Y, Player),
-	possivelCaptureKing(P, X1-Y, NTab, NX-Y, Player, Direction).
-possivelCaptureKing(OTab, X-Y, NTab, NX-Y, Player, Direction):-%Capturar em X mais
+	findPiece(OldBoard, X-Y, Player),
+	X1 is X - 1,
+	findPiece(OldBoard, X1-Y, 0),
+	putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
+	putPiece(_UpdatedBoard, UpdatedBoard2, X1-Y, Player),
+	possibleCaptureKing(UpdatedBoard2, X1-Y, NewBoard, NewX-Y, Player, Direction).
+possibleCaptureKing(OldBoard, X-Y, NewBoard, NewX-Y, Player, Direction):-%Capturar em X mais
 	Direction = 2,
-	findPiece(OTab, X-Y, Player),
-	X1 is X+1,
-	findPiece(OTab, X1-Y, 0),
-	putPiece(OTab, _I, X-Y, 0),
-	putPiece(_I, _N, X1-Y, Player),
-	possivelCaptureKing(_N, X1-Y, NTab, NX-Y, Player, Direction).
+	findPiece(OldBoard, X-Y, Player),
+	X1 is X + 1,
+	findPiece(OldBoard, X1-Y, 0),
+	putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
+	putPiece(_UpdatedBoard, _N, X1-Y, Player),
+	possibleCaptureKing(_N, X1-Y, NewBoard, NewX-Y, Player, Direction).
 
-possivelCapture(OTab,X-Y,NTab,NX-NY,Player):-
-	isKing(Player),!,
-	possivelCaptureKing(OTab,X-Y,NTab,NX-NY,Player,Direction).
+possibleCapture(OldBoard, X-Y, NewBoard, NewX-NewY, Player):-
+	isKing(Player), !,
+	possibleCaptureKing(OldBoard, X-Y, NewBoard, NewX-NewY, Player, Direction).
 /*Playeres Normais*/
-possivelCapture(OTab,X-Y,NTab,NX-Y,Player):-%Capturar em X menos
-	findPiece(OTab,X-Y,Player),
-	X1 is X-1,
-	findPiece(OTab,X1-Y,_A),
-	adversary(Player,_A),
-	NX is X-2,
-	findPiece(OTab,NX-Y,0),
-	putPiece(OTab,_I,X-Y,0),
-	putPiece(_I,_I1,X1-Y,0),
-	putPiece(_I1,NTab,NX-Y,Player).
-possivelCapture(OTab,X-Y,NTab,NX-Y,Player):-%Capturar em X mais
-	findPiece(OTab,X-Y,Player),
-	X1 is X+1,
-	findPiece(OTab,X1-Y,_A),
-	adversary(Player,_A),
-	NX is X+2,
-	findPiece(OTab,NX-Y,0),
-	putPiece(OTab,_I,X-Y,0),
-	putPiece(_I,_I1,X1-Y,0),
-	putPiece(_I1,NTab,NX-Y,Player).
-possivelCapture(OTab,X-Y,NTab,X-NY,Player):-%Capturar em Y mais
-	findPiece(OTab,X-Y,Player),
-	Y1 is Y+1,
-	findPiece(OTab,X-Y1,_A),
-	adversary(Player,_A),
-	NY is Y+2,
-	findPiece(OTab,X-NY,0),
-	putPiece(OTab,_I,X-Y,0),
-	putPiece(_I,_I1,X-Y1,0),
-	putPiece(_I1,NTab,X-NY,Player).
-possivelCapture(OTab,X-Y,NTab,X-NY,Player):-%Capturar em Y menos
-	findPiece(OTab,X-Y,Player),
-	Y1 is Y-1,
-	findPiece(OTab,X-Y1,_A),
-	adversary(Player,_A),
-	NY is Y-2,
-	findPiece(OTab,X-NY,0),
-	putPiece(OTab,_I,X-Y,0),
-	putPiece(_I,_I1,X-Y1,0),
-	putPiece(_I1,NTab,X-NY,Player).
+possibleCapture(OldBoard, X-Y, NewBoard, NewX-Y, Player):-%Capturar em X menos
+	findPiece(OldBoard, X-Y, Player),
+	X1 is X - 1,
+	findPiece(OldBoard, X1-Y, _A),
+	adversary(Player, _A),
+	NewX is X - 2,
+	findPiece(OldBoard, NewX-Y, 0),
+	putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
+	putPiece(_UpdatedBoard, _UpdatedBoard2, X1-Y, 0),
+	putPiece(_UpdatedBoard2, NewBoard, NewX-Y, Player).
+possibleCapture(OldBoard, X-Y, NewBoard, NewX-Y, Player):-%Capturar em X mais
+	findPiece(OldBoard, X-Y, Player),
+	X1 is X + 1,
+	findPiece(OldBoard, X1-Y, _A),
+	adversary(Player, _A),
+	NewX is X + 2,
+	findPiece(OldBoard, NewX-Y, 0),
+	putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
+	putPiece(_UpdatedBoard, _UpdatedBoard2, X1-Y, 0),
+	putPiece(_UpdatedBoard2, NewBoard, NewX-Y, Player).
+possibleCapture(OldBoard, X-Y, NewBoard, X-NewY, Player):-%Capturar em Y mais
+	findPiece(OldBoard, X-Y, Player),
+	Y1 is Y + 1,
+	findPiece(OldBoard, X-Y1, _A),
+	adversary(Player, _A),
+	NewY is Y + 2,
+	findPiece(OldBoard, X-NewY, 0),
+	putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
+	putPiece(_UpdatedBoard, _UpdatedBoard2, X-Y1, 0),
+	putPiece(_UpdatedBoard2, NewBoard, X-NewY, Player).
+possibleCapture(OldBoard, X-Y, NewBoard, X-NewY, Player):-%Capturar em Y menos
+	findPiece(OldBoard, X-Y, Player),
+	Y1 is Y - 1,
+	findPiece(OldBoard, X-Y1, _A),
+	adversary(Player, _A),
+	NewY is Y - 2,
+	findPiece(OldBoard, X-NewY, 0),
+	putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
+	putPiece(_UpdatedBoard, _UpdatedBoard2, X-Y1, 0),
+	putPiece(_UpdatedBoard2, NewBoard, X-NewY, Player).
 /*END*/
 
 /**Predicado para encontrar pecas
@@ -187,47 +186,50 @@ possivelCapture(OTab,X-Y,NTab,X-NY,Player):-%Capturar em Y menos
 findPiece(Tab,X-Y,Piece):-
     nth1(X, Tab, Linha),
     nth1(Y, Linha, Piece).
-/*END*/
+
 /**Predicado para mexer no Tabuleiro
  * X - Linha
  * Y - Coluna
  */
-putPieceLin([_|VLine],[Piece|VLine],1,Piece).
-putPieceLin([_R|VLine],[_R|NLine],Y,Piece):-
+putPieceInRow([_|OldRow], [Piece|OldRow], 1, Piece).
+putPieceInRow([_R|OldRow], [_R|NewRow], Y, Piece):-
 	Y1 is (Y-1),
-	putPieceLin(VLine,NLine,Y1,Piece).
-putLinTab([_|VTab],[Lin|VTab],1,Lin).
-putLinTab([_R|VTab],[_R|NTab],X,Lin):-
+	putPieceInRow(OldRow, NewRow, Y1, Piece).
+putRowInBoard([_|OldBoard], [Lin|OldBoard], 1, Lin).
+putRowInBoard([_R|OldBoard], [_R|NewBoard], X, Lin):-
 	X1 is (X-1),
-	putLinTab(VTab,NTab,X1,Lin).
-putPiece(OTab,NTab,X-Y,Piece):-
+	putRowInBoard(OldBoard, NewBoard, X1, Lin).
+putPiece(OldBoard, NewBoard, X-Y, Piece):-
 	X < 1, !, fail.
-putPiece(OTab,NTab,X-Y,Piece):-
+putPiece(OldBoard, NewBoard, X-Y, Piece):-
 	X > 8, !, fail.
-putPiece(OTab,NTab,X-Y,Piece):-
+putPiece(OldBoard, NewBoard, X-Y, Piece):-
 	Y < 1, !, fail.
-putPiece(OTab,NTab,X-Y,Piece):-
-	Y > 8, !, fail. 	
-putPiece(VTab,NTab,X-Y,Piece):-
-	nth1(X,VTab,VLinha),
-	putPieceLin(VLinha,NLinha,Y,Piece),
-	putLinTab(VTab,NTab,X,NLinha).
+putPiece(OldBoard, NewBoard, X-Y, Piece):-
+	Y > 8, !, fail.
+putPiece(OldBoard, NewBoard, X-Y, Piece):-
+	nth1(X, OldBoard, OldRow),
+	putPieceInRow(OldRow, NLinha, Y, Piece),
+	putRowInBoard(OldBoard, NewBoard, X, NLinha).
 /*END*/
 
 /*Predicado Para Mostrar o Tabuleiro*/
-showBoard(X):- showLine(X, 1).
-showLine(X,Y):- X = [],
-	write(' |A|B|C|D|E|F|G|H|').
-showLine(X,Y):- X = [H|R],
+showBoard(X):- showRow(X, 1).
+showRow(X, Y):- X = [],
+	write('--------------------------------------'), nl,
+	write('     |_A_|_B_|_C_|_D_|_E_|_F_|_G_|_H_|').
+showRow(X, Y):- X = [H|R],
 	Yn is (Y + 1),
+	write('--------------------------------------'), nl,
+	write('| '),
 	write(Y),
-	showCol(H),nl,
-	showLine(R,Yn).
-showCol(X):- X = [] , write('|').
-showCol(X):- X = [H|R],
-	write('|'),	
+	showRowValues(H), nl,
+	showRow(R, Yn).
+showRowValues(X):- X = [] , write(' |').
+showRowValues(X):- X = [H|R],
+	write(' | '),
 	showPiece(H),
-	showCol(R).
+	showRowValues(R).
 showPiece(X):- X = 1,
 	write('#').
 showPiece(X):- X = 2,
@@ -239,13 +241,10 @@ showPiece(X):- X = 11,
 showPiece(X):- X = 22,
 	write('&').
 /*END*/
-/*Predicado Para Ver o Numero de Capturas Possiveis*/
-captureNumber(OTab,X-Y,0,Player):-
-	\+possivelCapture(OTab,X-Y,NTab,NX-NY,Player).
+captureNumber(OldBoard, X-Y, 0, Player):-
+	\+possibleCapture(OldBoard, X-Y, NewBoard, NewX-NewY, Player).
 
-captureNumber(OTab,X-Y,Num,Player):-
-	possivelCapture(OTab,X-Y,NTab,NX-NY,Player),
-	captureNumber(NTab,NX-NY,NNum,Player),
+captureNumber(OldBoard, X-Y, Num, Player):-
+	possibleCapture(OldBoard, X-Y, NewBoard, NewX-NewY, Player),
+	captureNumber(NewBoard, NewX-NewY, NNum, Player),
 	Num is NNum+1.
-/*END*/
-
