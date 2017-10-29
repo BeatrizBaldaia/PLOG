@@ -33,6 +33,86 @@ findall(Num-X-Y,captureNumber([[0,0,0,0,0,0,0,0],[0,1,0,22,0,0,0,0],[0,0,0,0,0,0
 captureNumber([[0,0,0,0,0,0,0,0],[0,2,1,0,1,0,0,0],[0,1,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0]],X-Y,Num,2).
 
 */
+/*Predicado para validar jogadas, homens normais*/
+validMove(OTab, X-Y, Move, 1):-
+	validMovePlayer1(OTab, X-Y, Move, D).
+validMove(OTab, X-Y, Move, 2):-
+	validMovePlayer2(OTab, X-Y, Move, D).
+validMovePlayer2(OTab, X-Y, Move, y0):-
+	findPiece(OTab, X-Y, 2),
+	X1 is X-1,
+	findPiece(OTab, X1-Y, 0),
+	Move = [X-Y,X1-Y].
+validMovePlayer2(OTab, X-Y, Move, y-):-
+	findPiece(OTab, X-Y, 2),
+	X1 is X-1,
+	Y1 is Y-1,
+	findPiece(OTab, X1-Y1, 0),
+	Move = [X-Y,X1-Y1].
+validMovePlayer2(OTab, X-Y, Move, y+):-
+	findPiece(OTab, X-Y, 2),
+	X1 is X-1,
+	Y1 is Y+1,
+	findPiece(OTab, X1-Y1, 0),
+	Move = [X-Y,X1-Y1].
+validMovePlayer2(OTab, X-Y, [Move|Continue], y+):-
+	findPiece(OTab, X-Y, 2),
+	X1 is X-1,
+	Y1 is Y+1,
+	findPiece(OTab, X1-Y1, 2),
+	Move = [X-Y],
+	validMovePlayer2(OTab, X1-Y1, [Mov1|Continue], y+).
+validMovePlayer2(OTab, X-Y, [Move|Continue], y-):-
+	findPiece(OTab, X-Y, 2),
+	X1 is X-1,
+	Y1 is Y-1,
+	findPiece(OTab, X1-Y1, 2),
+	Move = [X-Y],
+	validMovePlayer2(OTab, X1-Y1, [Mov1|Continue], y-).
+validMovePlayer2(OTab, X-Y, [Move|Continue], y0):-
+	findPiece(OTab, X-Y, 2),
+	X1 is X-1,
+	findPiece(OTab, X1-Y1, 2),
+	Move = [X-Y],
+	validMovePlayer2(OTab, X1-Y, [Mov1|Continue], y0).
+validMovePlayer1(OTab, X-Y, Move, y0):-
+	findPiece(OTab, X-Y, 1),
+	X1 is X+1,
+	findPiece(OTab, X1-Y, 0),
+	Move = [X-Y,X1-Y].
+validMovePlayer1(OTab, X-Y, Move, y-):-
+	findPiece(OTab, X-Y, 1),
+	X1 is X+1,
+	Y1 is Y-1,
+	findPiece(OTab, X1-Y1, 0),
+	Move = [X-Y,X1-Y1].
+validMovePlayer1(OTab, X-Y, Move, y+):-
+	findPiece(OTab, X-Y, 1),
+	X1 is X+1,
+	Y1 is Y+1,
+	findPiece(OTab, X1-Y1, 0),
+	Move = [X-Y,X1-Y1].
+validMovePlayer1(OTab, X-Y, [Move|Continue], y+):-
+	findPiece(OTab, X-Y, 1),
+	X1 is X+1,
+	Y1 is Y+1,
+	findPiece(OTab, X1-Y1, 1),
+	Move = [X-Y],
+	validMovePlayer1(OTab, X1-Y1, [Mov1|Continue], y+).
+validMovePlayer1(OTab, X-Y, [Move|Continue], y-):-
+	findPiece(OTab, X-Y, 1),
+	X1 is X+1,
+	Y1 is Y-1,
+	findPiece(OTab, X1-Y1, 1),
+	Move = [X-Y],
+	validMovePlayer1(OTab, X1-Y1, [Mov1|Continue], y-).
+validMovePlayer1(OTab, X-Y, [Move|Continue], y0):-
+	findPiece(OTab, X-Y, 1),
+	X1 is X+1,
+	findPiece(OTab, X1-Y1, 1),
+	Move = [X-Y],
+	validMovePlayer1(OTab, X1-Y, [Mov1|Continue], y0).
+/*END*/
 /*Predicado para promover homens*/
 promotedToKing(OldBoard, NewBoard):-
 	promotedToKing1(OldBoard, _UpdatedBoard),
