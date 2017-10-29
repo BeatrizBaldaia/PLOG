@@ -13,15 +13,118 @@
 Exemplo:
 [[0,0,0,0,0,0,0,0],[0,1,0,22,0,0,0,0],[0,0,0,0,0,0,1,0],[1,0,0,0,0,0,0,0],[0,0,0,0,0,2,1,0],[0,11,2,0,0,0,2,1],[0,0,0,2,0,0,0,0],[0,0,0,0,2,0,0,0]]
 
+
+showBoard([[0,0,0,0,0,0,0,0],[0,1,0,22,0,0,0,0],[0,0,0,1,0,0,0,0],[1,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0]]).
+setof(Num-X-Y,captureNumber([[0,0,0,0,0,0,0,0],[0,1,0,22,0,0,0,0],[0,0,0,1,0,0,0,0],[1,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0]],X-Y,Num,22),_L), reverse(_L,L).
+
 [[0,2,0,22,0,2,0,1],[0,1,0,22,0,0,0,0],[0,0,0,0,0,0,1,0],[1,0,0,0,0,0,0,0],[0,0,0,0,0,2,1,0],[0,11,2,0,0,0,2,1],[0,0,0,2,0,0,0,0],[0,0,1,0,2,0,1,11]]
 
 gameOver([[0,0,0,0,0,0,0,0],[0,1,0,0,0,0,0,0],[0,0,0,0,0,0,1,0],[1,0,0,0,0,0,0,0],[0,0,0,0,0,0,1,0],[0,11,0,0,0,0,0,1],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0]],2).
 X = [[0,2,0,22,0,2,0,1],[0,1,0,22,0,0,0,0],[0,0,0,0,0,0,1,0],[1,0,0,0,0,0,0,0],[0,0,0,0,0,2,1,0],[0,11,2,0,0,0,2,1],[0,0,0,2,0,0,0,0],[0,0,1,0,2,0,1,11]],showBoard(X),promotedToKing(X,N),showBoard(N).
 promotedToKing([[0,2,0,22,0,2,0,1],[0,1,0,22,0,0,0,0],[0,0,0,0,0,0,1,0],[1,0,0,0,0,0,0,0],[0,0,0,0,0,2,1,0],[0,11,2,0,0,0,2,1],[0,0,0,2,0,0,0,0],[0,0,1,0,2,0,1,11]],N),showBoard(N).
+
+Move = [inicialP,P2,P3,..., finalP]
+
+findall(M,validMovePlayer2([[1,1,1,1,1,1,1,1],[0,1,1,1,1,1,1,0],[0,0,1,1,1,1,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,2,2,2,2,0,0],[0,2,2,2,2,2,2,0],[2,2,2,2,2,2,2,2]],X-Y,M,D),L).
+
 */
 gameOver(OTab, Player):- findPiece(OTab, _X-_Y, Player), validMoves(OTab, Player, Moves), !, fail.
 gameOver(_OTab, _Player).
 validMoves(OTab, Player, Moves).%TODO Errado.
+validMoves(OTab, Player, Moves):-
+	setof(Num-X-Y,captureNumber(OTab,X-Y,Num,Player),_L), 
+	reverse(_L,L).
+
+validMove(OTab, X-Y, Move, 1):-
+	validMovePlayer1(OTab, X-Y, Move, D).
+validMove(OTab, X-Y, Move, 2):-
+	validMovePlayer2(OTab, X-Y, Move, D).
+
+validMovePlayer2(OTab, X-Y, Move, y0):-
+	findPiece(OTab, X-Y, 2),
+	X1 is X-1,
+	findPiece(OTab, X1-Y, 0),
+	Move = [X-Y,X1-Y].
+validMovePlayer2(OTab, X-Y, Move, y-):-
+	findPiece(OTab, X-Y, 2),
+	X1 is X-1,
+	Y1 is Y-1,
+	findPiece(OTab, X1-Y1, 0),
+	Move = [X-Y,X1-Y1].
+validMovePlayer2(OTab, X-Y, Move, y+):-
+	findPiece(OTab, X-Y, 2),
+	X1 is X-1,
+	Y1 is Y+1,
+	findPiece(OTab, X1-Y1, 0),
+	Move = [X-Y,X1-Y1].
+
+validMovePlayer2(OTab, X-Y, [Move|Continue], y+):-
+	findPiece(OTab, X-Y, 2),
+	X1 is X-1,
+	Y1 is Y+1,
+	findPiece(OTab, X1-Y1, 2),
+	Move = [X-Y],
+	validMovePlayer2(OTab, X1-Y1, [Mov1|Continue], y+).
+validMovePlayer2(OTab, X-Y, [Move|Continue], y-):-
+	findPiece(OTab, X-Y, 2),
+	X1 is X-1,
+	Y1 is Y-1,
+	findPiece(OTab, X1-Y1, 2),
+	Move = [X-Y],
+	validMovePlayer2(OTab, X1-Y1, [Mov1|Continue], y-).
+validMovePlayer2(OTab, X-Y, [Move|Continue], y0):-
+	findPiece(OTab, X-Y, 2),
+	X1 is X-1,
+	findPiece(OTab, X1-Y1, 2),
+	Move = [X-Y],
+	validMovePlayer2(OTab, X1-Y, [Mov1|Continue], y0).
+
+
+
+
+
+
+
+
+validMovePlayer1(OTab, X-Y, Move, y0):-
+	findPiece(OTab, X-Y, 1),
+	X1 is X+1,
+	findPiece(OTab, X1-Y, 0),
+	Move = [X-Y,X1-Y].
+validMovePlayer1(OTab, X-Y, Move, y-):-
+	findPiece(OTab, X-Y, 1),
+	X1 is X+1,
+	Y1 is Y-1,
+	findPiece(OTab, X1-Y1, 0),
+	Move = [X-Y,X1-Y1].
+validMovePlayer1(OTab, X-Y, Move, y+):-
+	findPiece(OTab, X-Y, 1),
+	X1 is X+1,
+	Y1 is Y+1,
+	findPiece(OTab, X1-Y1, 0),
+	Move = [X-Y,X1-Y1].
+
+validMovePlayer1(OTab, X-Y, [Move|Continue], y+):-
+	findPiece(OTab, X-Y, 1),
+	X1 is X+1,
+	Y1 is Y+1,
+	findPiece(OTab, X1-Y1, 1),
+	Move = [X-Y],
+	validMovePlayer1(OTab, X1-Y1, [Mov1|Continue], y+).
+validMovePlayer1(OTab, X-Y, [Move|Continue], y-):-
+	findPiece(OTab, X-Y, 1),
+	X1 is X+1,
+	Y1 is Y-1,
+	findPiece(OTab, X1-Y1, 1),
+	Move = [X-Y],
+	validMovePlayer1(OTab, X1-Y1, [Mov1|Continue], y-).
+validMovePlayer1(OTab, X-Y, [Move|Continue], y0):-
+	findPiece(OTab, X-Y, 1),
+	X1 is X+1,
+	findPiece(OTab, X1-Y1, 1),
+	Move = [X-Y],
+	validMovePlayer1(OTab, X1-Y, [Mov1|Continue], y0).
+
 
 play:-
 	state(InitialPlayer, InicialTab),
