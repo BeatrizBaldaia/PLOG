@@ -255,6 +255,21 @@ captureNumber(OldBoard, X-Y, Num, Player):-
 	possibleCapture(OldBoard, X-Y, NewBoard, NewX-NewY, Player),
 	captureNumber(NewBoard, NewX-NewY, NNum, Player),
 	Num is NNum+1.
+
+validMoves(OTab, Player, Moves):-
+	findall(Move, validMove(OTab, X-Y, Move, Player), Moves).
+validMoves(OldTab, Player, Moves):-
+	setof(Num-X-Y, captureNumber(OTab, X-Y, Num, Player), _L),
+	reverse(_L, L).
+
+getCaptureMove(OTab, X-Y, Num, Player, Move)
+
+
+validMoves(OTab, Player, Moves).%TODO Errado.
+validMoves(OTab, Player, Moves):-
+	setof(Num-X-Y,captureNumber(OTab,X-Y,Num,Player),_L), 
+	reverse(_L,L).
+
 validMove(OTab, X-Y, Move, 1):-
 	validMovePlayer1(OTab, X-Y, Move, D).
 validMove(OTab, X-Y, Move, 2):-
@@ -365,10 +380,7 @@ playGame(Player, OTab, NPlayer, NTab):-
 	move(OTab, Move, NTab),
 	nextPlayer(Player, NPlayer).
 
-validMoves(OTab, Player, Moves).%TODO Errado.
-validMoves(OTab, Player, Moves):-
-	setof(Num-X-Y,captureNumber(OTab,X-Y,Num,Player),_L), 
-	reverse(_L,L).
+
 gameOver(OldBoard, Player):- findPiece(OldBoard, _X-_Y, Player), validMoves(OldBoard, Player, Moves), !, fail.
 gameOver(_OldBoard, _Player).
 

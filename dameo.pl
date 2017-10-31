@@ -332,10 +332,10 @@ showPiece(X):- X = 11,
 showPiece(X):- X = 22,
 	write('&').
 /*END*/
-captureNumber(OldBoard, X-Y, 0, Player):-
+captureNumber(OldBoard, X-Y, 0, Player, [X-Y]):-
 	\+possibleCapture(OldBoard, X-Y, NewBoard, NewX-NewY, Player).
 
-captureNumber(OldBoard, X-Y, Num, Player):-
+captureNumber(OldBoard, X-Y, Num, Player, [X-Y|Next]):-
 	possibleCapture(OldBoard, X-Y, NewBoard, NewX-NewY, Player),
-	captureNumber(NewBoard, NewX-NewY, NNum, Player),
+	captureNumber(NewBoard, NewX-NewY, NNum, Player, Next),
 	Num is NNum+1.
