@@ -1,4 +1,15 @@
 create_board(Board):-
+  %adversary(Jogador,Adversario).
+  adversary(1,2).
+  adversary(1,22).
+  adversary(11,2).
+  adversary(11,22).
+  adversary(2,1).
+  adversary(2,11).
+  adversary(22,1).
+  adversary(22,11).
+  isKing(22).
+  isKing(11).
   Board = [
   [1,1,1,1,1,1,1,1],
   [0,1,1,1,1,1,1,0],
