@@ -33,6 +33,17 @@ findall(Num-X-Y,captureNumber([[0,0,0,0,0,0,0,0],[0,1,0,22,0,0,0,0],[0,0,0,0,0,0
 captureNumber([[0,0,0,0,0,0,0,0],[0,2,1,0,1,0,0,0],[0,1,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0]],X-Y,Num,2).
 
 */
+validMoves(OTab, Player, Moves):-
+	setof(Num-X-Y-Moves,captureNumber(OTab,X-Y,Num,Player, Moves),_L), 
+	reverse(_L,L),
+	[NumMax-_A-_B-_C|_R] = L,
+	movesOfCaptureList(NumMax, L, Moves).
+validMoves(OTab, Player, Moves):-
+	findall(Move,validMove(OTab, X-Y, Move, Player), Moves).
+movesOfCaptureList(NumMax,[Num-X-Y-M|Rest], []):-
+	NumMax \= Num.
+movesOfCaptureList(NumMax,[Num-X-Y-M|Rest], [M|Moves]):-
+	movesOfCaptureList(NumMax,Rest, Moves).
 /*Predicado para validar jogadas, homens normais*/
 validMove(OTab, X-Y, Move, 1):-
 	validMovePlayer1(OTab, X-Y, Move, D).
@@ -332,10 +343,10 @@ showPiece(X):- X = 11,
 showPiece(X):- X = 22,
 	write('&').
 /*END*/
-captureNumber(OldBoard, X-Y, 0, Player):-
+captureNumber(OldBoard, X-Y, 0, Player, [X-Y]):-
 	\+possibleCapture(OldBoard, X-Y, NewBoard, NewX-NewY, Player).
 
-captureNumber(OldBoard, X-Y, Num, Player):-
+captureNumber(OldBoard, X-Y, Num, Player, [X-Y|Next]):-
 	possibleCapture(OldBoard, X-Y, NewBoard, NewX-NewY, Player),
-	captureNumber(NewBoard, NewX-NewY, NNum, Player),
+	captureNumber(NewBoard, NewX-NewY, NNum, Player, Next),
 	Num is NNum+1.
