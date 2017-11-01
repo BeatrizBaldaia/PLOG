@@ -2,31 +2,36 @@
 Jogador escolhe a peça que vai jogar
 e o sentido do movimento da mesma
 */
-defineDirection(PlayerNum):-
+selectPiece(CurrBoard, NewBoard, PlayerNum):-
+  showBoard(CurrBoard),
   repeat,
   write('Choose your piece.'), nl,
-  read(X-Y),
+  write('Row (Number)'), read(Y),
+  write('Column (Letter)'), read(L), convertLetterToNum(L, X),
   findPiece(CurrBoard, X-Y, Player),
-  PlayerNum = 1 -> member(Player, [1, 11]);
-  member(Player, [2, 22]), !,
+  PlayerNum = 1 -> member(Player, [1, 11]), !, defineDirection(CurrBoard, PlayerNum, Player);
+  member(Player, [2, 22]), !, defineDirection(CurrBoard, NewBoard, PlayerNum, Player).
+
+defineDirection(CurrBoard, NewBoard, PlayerNum, Player):-
   write('Move the piece.'), nl,
+  read(D),
   repeat,
   Player = 1 ->
-      validMan1Move(CurrBoard, X-Y, NewX-NewY, Player, D), updateBoardSimpleMove(CurrBoard, NewBoard, X-Y, NewX-NewY, Player),
-      showBoard(NewBoard);
+     validMan1Move(CurrBoard, X-Y, NewX-NewY, Player, D), updateBoardSimpleMove(CurrBoard, NewBoard, X-Y, NewX-NewY, Player),
+     showBoard(NewBoard);
   Player = 2 ->
       validMan2Move(CurrBoard, X-Y, NewX-NewY, Player, D), updateBoardSimpleMove(CurrBoard, NewBoard, X-Y, NewX-NewY, Player),
-      showBoard(NewBoard);
+      showBoard(NewBoard), CurrBoard is NewBoard;
   repeat,
   read(D),
   member(D, [1, 2, 3, 4, 6, 7, 8, 9]), !,
   repeat,
   Player = 11 ->
     validKing1Move(CurrBoard, X-Y, NewX-NewY, Player, D), updateBoardSimpleMove(CurrBoard, NewBoard, X-Y, NewX-NewY, Player),
-    showBoard(NewBoard), keepMoving(NewX-NewY, Player, Direction);
+    showBoard(NewBoard), CurrBoard is NewBoard, keepMoving(NewX-NewY, Player, Direction);
   Player = 22 ->
     validKing2Move(CurrBoard, X-Y, NewX-NewY, Player, D), updateBoardSimpleMove(CurrBoard, NewBoard, X-Y, NewX-NewY, Player),
-    showBoard(NewBoard), keepMoving(NewX-NewY, Player, Direction).
+    showBoard(NewBoard), CurrBoard is NewBoard, keepMoving(NewX-NewY, Player, Direction).
 
 /*
 O rei pode andar mais do que uma

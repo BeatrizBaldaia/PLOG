@@ -1,4 +1,4 @@
-chooseGame:-
+chooseGameMode:-
   displayMainMenu,
   selectOption.
 
@@ -8,10 +8,11 @@ selectOption:-
   Option < 4,
   startPlay(Option).
 
-/*
+
 startPlay(1):-
-  startGame(...).
-startPlay(2):-
+  create_board(Board),
+  game1Vs1(Board).
+/*startPlay(2):-
   startGame(...).
 startPlay(3):-
   startGame(...).

@@ -1,11 +1,11 @@
 /*Predicado Para Mostrar o Tabuleiro*/
 showBoard(X):- showRow(X, 1).
 showRow(X, Y):- X = [],
-	write('--------------------------------------'), nl,
-	write('     |_A_|_B_|_C_|_D_|_E_|_F_|_G_|_H_|').
+	write('-------------------------------------'), nl,
+	write('    |_A_|_B_|_C_|_D_|_E_|_F_|_G_|_H_|'), nl, nl, nl.
 showRow(X, Y):- X = [H|R],
 	Yn is (Y + 1),
-	write('--------------------------------------'), nl,
+	write('-------------------------------------'), nl,
 	write('| '),
 	write(Y),
 	showRowValues(H), nl,
@@ -16,12 +16,12 @@ showRowValues(X):- X = [H|R],
 	showPiece(H),
 	showRowValues(R).
 showPiece(X):- X = 1,
-	write('#').
+	put_code(219).
 showPiece(X):- X = 2,
-	write('@').
+	write('O').
 showPiece(X):- X = 0,
 	write(' ').
 showPiece(X):- X = 11,
-	write('%').
+	put_code(178).
 showPiece(X):- X = 22,
-	write('&').
+	put_code(184).

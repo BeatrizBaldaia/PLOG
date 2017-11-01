@@ -1,17 +1,20 @@
 /*
 Predicado para encontrar pecas
 */
-findPiece(Tab,X-Y,Piece):-
-    nth1(X, Tab, Rowha),
-    nth1(Y, Rowha, Piece).
+findPiece(Board, X-Y, Piece):-
+    nth1(Y, Board, Row),
+    nth1(X, Row, Piece).
 
 /*
 Predicado para obter a direcao de um movimento simples
 */
-getManDirection(X-Y, X1-Y1, D):-
-  X = X1 -> D is x0;
-  X > X1 -> D is x--;
-  D is x++.
+getManDirection(Player, X-Y, X1-Y1, D):-
+  X > X1 -> D is 4;
+  X < X1 -> D is 6;
+  Player = 1 -> (
+    D is 2
+  );
+    D is 8.
 
 /*
 Predicados para colocar/mover peças no Tabuleiro

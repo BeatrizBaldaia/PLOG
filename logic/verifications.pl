@@ -24,5 +24,9 @@ promotedToKing2(OldBoard, NewBoard):-
 /*
 Verificacao de fim de jogo
 */
+%TODO
+gameOver(OldBoard, Player):- fail.
+/*
 gameOver(OldBoard, Player):- findPiece(OldBoard, _X-_Y, Player), validMoves(OldBoard, Player, Moves), !, fail.
 gameOver(_OldBoard, _Player).
+*/
