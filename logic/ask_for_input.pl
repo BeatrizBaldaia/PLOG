@@ -40,20 +40,40 @@ write('saX :'),write(X),nl, write('asxdY :'),write(Y),nl,
 */
 
 
-defineDirection(CurrBoard, NewBoard, X-Y, 1, Player):-
+defineDirection(CurrBoard, NewBoard, X-Y, 1, 1):-
   write('Move the piece.'), nl,
   read(D),
   write('Move player 1'),nl,
-  validMan1Move(CurrBoard, X-Y, NewX-NewY, Player, D),
-  updateBoardSimpleMove(CurrBoard, NewBoard, X-Y, NewX-NewY, Player),
+  validMan1Move(CurrBoard, X-Y, NewX-NewY, 1, D),
+  updateBoardSimpleMove(CurrBoard, NewBoard, X-Y, NewX-NewY, 1),
   showBoard(NewBoard).
-defineDirection(CurrBoard, NewBoard, X-Y, 2, Player):-
+defineDirection(CurrBoard, NewBoard, X-Y, 2, 2):-
   write('Move the piece.'), nl,
   read(D),
   write('Move player 2'), nl,
-  validMan2Move(CurrBoard, X-Y, NewX-NewY, Player, D),
-  updateBoardSimpleMove(CurrBoard, NewBoard, X-Y, NewX-NewY, Player),
+  validMan2Move(CurrBoard, X-Y, NewX-NewY, 2, D),
+  updateBoardSimpleMove(CurrBoard, NewBoard, X-Y, NewX-NewY, 2),
   showBoard(NewBoard).
+
+defineDirection(CurrBoard, NewBoard, X-Y, 1, 11):-
+  write('Move the piece.'), nl,
+  read(D),
+  member(D, [1, 2, 3, 4, 6, 7, 8, 9]), !,
+  write('Move player 1'),nl,
+  validKing1Move(CurrBoard, X-Y, NewX-NewY, 11, D),
+  updateBoardSimpleMove(CurrBoard, NewBoard, X-Y, NewX-NewY, 11),
+  showBoard(NewBoard),
+  keepMoving(NewX-NewY, 11, Direction).
+defineDirection(CurrBoard, NewBoard, X-Y, 2, 22):-
+  write('Move the piece.'), nl,
+  read(D),
+  member(D, [1, 2, 3, 4, 6, 7, 8, 9]), !,
+  write('Move player 2'), nl,
+  validKing2Move(CurrBoard, X-Y, NewX-NewY, Player, D),
+  updateBoardSimpleMove(CurrBoard, NewBoard, X-Y, NewX-NewY, Player),
+  showBoard(NewBoard),
+  keepMoving(NewX-NewY, Player, Direction).
+
 
 /*
 defineDirection(CurrBoard, NewBoard, X-Y, PlayerNum, Player):-
@@ -80,8 +100,17 @@ defineDirection(CurrBoard, NewBoard, X-Y, PlayerNum, Player):-
 /*
 O rei pode andar mais do que uma
 casa na mesma linha de percurso
-*/
+*//*
 keepMoving(X-Y, Player, Direction):-
   read(D),
   D = Direction ->  fail;%para continuar a mover no ciclo repeat
   D \= '\n' -> keepMoving(X-Y, Player, Direction).%introduziu a direcao errada
+*/
+keepMoving(X-Y, Player, Direction):-
+  read(D),
+  D = Direction.%WAHT
+
+keepMoving(X-Y, Player, Direction):-
+  read(D),
+  D \= Direction, fail.
+
