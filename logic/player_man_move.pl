@@ -33,7 +33,7 @@ validMan1Move(CurrBoard, X-Y, NewX-NewY, Player, 1):-
   X1 is X - 1,
   Y1 is Y + 1,
 	findPiece(CurrBoard, X1-Y1, Player),
-  validMan1Move(CurrBoard, X-Y, NewX-NewY, Player, 1).
+  validMan1Move(CurrBoard, X1-Y1, NewX-NewY, Player, 1).
 
 %movimento diagonal direita
 validMan1Move(CurrBoard, X-Y, NewX-NewY, Player, 3):-
@@ -45,10 +45,10 @@ validMan1Move(CurrBoard, X-Y, NewX-NewY, Player, 3):-
 %movimento linear diagonal direita (salta por cima de pecas do mesmo tipo)
 validMan1Move(CurrBoard, X-Y, NewX-NewY, Player, 3):-
 	findPiece(CurrBoard, X-Y, Player),
-  X1 is X + 1,
+    X1 is X + 1,
 	Y1 is Y + 1,
 	findPiece(CurrBoard, X1-Y1, Player),
-	validMan1Move(CurrBoard, X-Y, NewX-NewY, Player, 3).
+	validMan1Move(CurrBoard, X1-Y1, NewX-NewY, Player, 3).
 
 
 
@@ -63,7 +63,7 @@ validMan2Move(CurrBoard, X-Y, NewX-NewY, Player, 8):-
   findPiece(CurrBoard, X-Y, Player),
   Y1 is Y - 1,
   findPiece(CurrBoard, X-Y1, Player),
-  validMan2Move(CurrBoard, X-Y, NewX-NewY, Player, 8).
+  validMan2Move(CurrBoard, X-Y1, NewX-NewY, Player, 8).
 
 %movimento diagonal esquerda
 validMan2Move(CurrBoard, X-Y, NewX-NewY, Player, 4):-
@@ -78,7 +78,7 @@ validMan2Move(CurrBoard, X-Y, NewX-NewY, Player, 4):-
   X1 is X - 1,
   Y1 is Y - 1,
 	findPiece(CurrBoard, X1-Y1, Player),
-  validMan2Move(CurrBoard, X-Y, NewX-NewY, Player, 4).
+  validMan2Move(CurrBoard, X1-Y1, NewX-NewY, Player, 4).
 
 %movimento diagonal direita
 validMan2Move(CurrBoard, X-Y, NewX-NewY, Player, 6):-
@@ -93,4 +93,4 @@ validMan2Move(CurrBoard, X-Y, NewX-NewY, Player, 6):-
   X1 is X + 1,
 	Y1 is Y - 1,
 	findPiece(CurrBoard, X1-Y1, Player),
-	validMan2Move(CurrBoard, X-Y, NewX-NewY, Player, 6).
+	validMan2Move(CurrBoard, X1-Y1, NewX-NewY, Player, 6).
