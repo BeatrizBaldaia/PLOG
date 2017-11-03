@@ -14,5 +14,6 @@
 
 :-include('utils/init.pl').
 :-include('utils/map_positions.pl').
+:-include('utils/aux_func.pl').
 
 startExample :- chooseGameMode.

@@ -45,7 +45,7 @@ putRowInBoard([_R|OldBoard], [_R|NewBoard], Y, Row):-
 /*
 Predicado para converter letra (do tabuleiro)
 em numero (na lista tabuleiro)
-*/
+*//*
 convertLetterToNum('a', 1).
 convertLetterToNum('b', 2).
 convertLetterToNum('c', 3).
@@ -54,7 +54,7 @@ convertLetterToNum('e', 5).
 convertLetterToNum('f', 6).
 convertLetterToNum('g', 7).
 convertLetterToNum('h', 8).
-/*
+*/
 convertLetterToNum(L, N):-
   (L = 'A') -> N is 1;
   (L = 'B') -> N is 2;
@@ -64,7 +64,7 @@ convertLetterToNum(L, N):-
   (L = 'F') -> N is 6;
   (L = 'G') -> N is 7;
   (L = 'H') -> N is 8.
-*/
+
 /*
 Predicado que atualiza o tabuleiro
 */
