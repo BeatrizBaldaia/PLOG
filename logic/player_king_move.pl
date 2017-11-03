@@ -21,12 +21,9 @@ validKing1Move(CurrBoard, X-Y, NewX-Y, Player, 4):-
   	findPiece(CurrBoard, X1-Y, 0),
   	NewX is X1.
 validKing1Move(CurrBoard, X-Y, NewX-Y, Player, 6):-
-	write('What1'),
     findPiece(CurrBoard, X-Y, Player),
   	X1 is X - 1,
-	write('What'),
   	findPiece(CurrBoard, X1-Y, 0),
-	write('Dfu'),
   	NewX is X1.
 validKing1Move(CurrBoard, X-Y, NewX-NewY, Player, 7):-
     findPiece(CurrBoard, X-Y, Player),
