@@ -24,7 +24,7 @@ Predicado para verificar a captura de uma peça
 */
 possibleCapture(OldBoard, X-Y, NewBoard, NewX-NewY, Player):-
 	isKing(Player), !,
-	possibleKingCapture(OldBoard, X-Y, NewBoard, NewX-NewY, Player, Direction).
+	possibleCaptureKing(OldBoard, X-Y, NewBoard, NewX-NewY, Player, Direction).
 /*Playeres Normais*/
 possibleCapture(OldBoard, X-Y, NewBoard, NewX-Y, Player):-%Capturar para a esquerda
 	findPiece(OldBoard, X-Y, Player),
