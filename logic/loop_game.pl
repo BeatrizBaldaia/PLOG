@@ -24,12 +24,12 @@ playGame(2, Board, 1, NewBoard):-
   displayPlayer2Turn,
   selectPiece(Board, NewBoard, 2).
 
-mandatoryCapture(Board, NewBoard, Player)
+mandatoryCapture(Board, NewBoard, Player):-
 	setof(Num-X-Y-Move,captureNumber(Board,X-Y,Num,Player,Move),_L), 
 	reverse(_L,[Num-X-Y-Move|Rest]),
 	ite(Num = 0,
 		selectPiece(Board, NewBoard, Player),
-		selectPieceCapture(Board, NewBoard, Player, [Num-X-Y-Move|Rest])).
-
-selectPieceCapture(Board, NewBoard, Player, [Num-X-Y-Move|Rest])
+		(getPossivelCaptures([Num-X-Y-Move|Rest], Moves, Num),		
+		selectPieceCapture(Board, NewBoard, Player, Moves)
+		)).
 

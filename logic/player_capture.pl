@@ -1,13 +1,22 @@
+/*Prenche array de moves*/
+getPossivelCaptures([], [], _Num).
+getPossivelCaptures([Num-X-Y-Move|Rest], Moves, NumCap):-
+	ite(Num = NumCap,
+		(getPossivelCaptures(Rest, Mov, NumCap),
+			Moves = [Move|Mov]),
+		Moves = []).
+
+
 /*
 Predicado para contar o numero
 de capturas possivel
 */
-captureNumber(OldBoard, X-Y, 0, Player):-
+captureNumber(OldBoard, X-Y, 0, Player,[X-Y]):-
 	\+possibleCapture(OldBoard, X-Y, NewBoard, NewX-NewY, Player).
 
-captureNumber(OldBoard, X-Y, Num, Player):-
+captureNumber(OldBoard, X-Y, Num, Player,[X-Y|Next]):-
 	possibleCapture(OldBoard, X-Y, NewBoard, NewX-NewY, Player),
-	captureNumber(NewBoard, NewX-NewY, NNum, Player),
+	captureNumber(NewBoard, NewX-NewY, NNum, Player, Next),
 	Num is NNum+1.
 
 /*
