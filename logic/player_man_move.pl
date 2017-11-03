@@ -49,8 +49,10 @@ validMan1Move(CurrBoard, X-Y, NewX-NewY, Player, 3):-
 	Y1 is Y + 1,
 	findPiece(CurrBoard, X1-Y1, Player),
 	validMan1Move(CurrBoard, X1-Y1, NewX-NewY, Player, 3).
-
-
+/*
+validMan1Move(CurrBoard, X-Y, NewX-NewY, Player, D):-
+	fail.
+*/
 
 %movimento vertical
 validMan2Move(CurrBoard, X-Y, NewX-NewY, Player, 8):-

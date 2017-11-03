@@ -2,43 +2,43 @@
 Jogador escolhe a peça que vai jogar
 e o sentido do movimento da mesma
 */
-selectPiece(CurrBoard, NewBoard, 1):-
+selectPiece(CurrBoard, NewBoard, PlayerNum):-
   showBoard(CurrBoard),
 repeat,
   write('Choose your piece.'), nl,
   write('Row (Number)'), read(Y),
   write('Column (Letter)'), read(L),convertLetterToNum(L, X),
   findPiece(CurrBoard, X-Y, Player),
+  ite(
+	PlayerNum = 1,
+	member(Player, [1, 11]),
+	member(Player, [2, 22])),
   !,
-  member(Player, [1, 11]), !, defineDirection(CurrBoard, NewBoard, X-Y, Player).
-
-selectPiece(CurrBoard, NewBoard, 2):-
-  showBoard(CurrBoard),
-repeat,
-  write('Choose your piece.'), nl,
-  write('Row (Number)'), read(Y),
-  write('Column (Letter)'), read(L), convertLetterToNum(L, X),
-  findPiece(CurrBoard, X-Y, Player),
-  !,
-  member(Player, [2, 22]), !, defineDirection(CurrBoard, NewBoard, X-Y, Player).
+  defineDirection(CurrBoard, NewBoard, X-Y, Player).
 
 defineDirection(CurrBoard, NewBoard, X-Y, Player):-
   member(Player, [1, 2]), !,
+  repeat,   
   write('Move the piece.'), nl,
-  read(D),
+  read(D),  
 ite(
 	Player = 1,
-	(write('Move player 1'),nl,
-		validMan1Move(CurrBoard, X-Y, NewX-NewY, 1, D)),
-	(write('Move player 2'),nl,
+	(write('Move player 1'), nl,
+		write(X),write('-'),write(Y),nl,write(D),nl,
+		validMan1Move(CurrBoard, X-Y, NewX-NewY, 1, D),
+		write('ERRO')),
+	(write('Move player 2'), nl,
 		validMan2Move(CurrBoard, X-Y, NewX-NewY, 2, D))),
   updateBoardSimpleMove(CurrBoard, NewBoard, X-Y, NewX-NewY, Player),
   showBoard(NewBoard).
 
 defineDirection(CurrBoard, FinalBoard, X-Y, Player):-
+  member(Player, [11, 22]), !,
+  repeat,
   write('Move the piece.'), nl,
   read(D),
-  member(D, [1, 2, 3, 4, 6, 7, 8, 9]), !,
+  member(D, [1, 2, 3, 4, 6, 7, 8, 9]),
+  write('Hate My'),
   keepMovingKing(CurrBoard, FinalBoard, X-Y, Player, D).
 
 keepMovingKing(CurrBoard, FinalBoard, X-Y, Player, D):-
