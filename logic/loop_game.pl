@@ -70,17 +70,11 @@ chooseMovePC(Moves, Move):-
 	random_member(Move, Moves).%Nivel 1
 
 applyMovePC(CurrBoard, NewBoard, [X-Y,NewX-NewY], Player, yes):-
-<<<<<<< HEAD
-write('Simple Move'), nl,
-updateBoardSimpleMove(CurrBoard, NewBoard, X-Y, NewX-NewY, Player).
-applyMovePC(CurrBoard, NewBoard, [X-Y],Player,no).
-applyMovePC(CurrBoard, NewBoard, [X-Y,NewX-NewY|Rest],Player, no):- nl,
-	write('Viva la vida'), nl,
-=======
   updateBoardSimpleMove(CurrBoard, NewBoard, X-Y, NewX-NewY, Player).
+
 applyMovePC(NewBoard, NewBoard, [X-Y],Player,no).
+
 applyMovePC(CurrBoard, NewBoard, [X-Y,NewX-NewY|Rest],Player, no):-
->>>>>>> 4fb775a354d4a53c7c4d84c2edd024fc93f585eb
 	updateBoardSimpleMove(CurrBoard, _updateBoard, X-Y, NewX-NewY, Player),
 	takeAdversary(X-Y, NewX-NewY, _updateBoard, _updateBoard1),
 	applyMovePC(_updateBoard1,  NewBoard, [NewX-NewY|Rest],Player, no).
