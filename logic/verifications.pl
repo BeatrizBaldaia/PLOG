@@ -22,23 +22,7 @@ promotedToKing2(OldBoard, NewBoard):-
 		(write('QTF'),nl, putPiece(OldBoard, _UpdatedBoard, X-1, 22),
 		promotedToKing2(_UpdatedBoard, NewBoard)),
 	(write('return'),nl,NewBoard = OldBoard)).
-/*
-promotedToKing1(NewBoard, NewBoard):-
-	write('Nao ha reis'), nl,
-	\+findPiece(NewBoard, X-8, 1).
-promotedToKing1(OldBoard, NewBoard):-
-	write('ha reis'), nl,
-	findPiece(OldBoard, X-8, 1),
-	putPiece(OldBoard, _UpdatedBoard, X-8, 11),
-	promotedToKing1(_UpdatedBoard, NewBoard).
 
-promotedToKing2(OldBoard, OldBoard):-
-	\+findPiece(OldBoard, X-1, 2).
-promotedToKing2(OldBoard, NewBoard):-
-	findPiece(OldBoard, X-1, 2),
-	putPiece(OldBoard, _UpdatedBoard, X-1, 22),
-	promotedToKing2(_UpdatedBoard, NewBoard).
-*/
 /*
 Verificacao de fim de jogo
 */
