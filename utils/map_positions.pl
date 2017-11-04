@@ -1,3 +1,23 @@
+applyMovePC(CurrBoard, NewBoard, [X-Y,NewX-NewY], Player, yes):-
+  updateBoardSimpleMove(CurrBoard, NewBoard, X-Y, NewX-NewY, Player).
+
+applyMovePC(NewBoard, NewBoard, [X-Y],Player,no).
+
+applyMovePC(CurrBoard, NewBoard, [X-Y,NewX-NewY|Rest],Player, no):-
+	updateBoardSimpleMove(CurrBoard, _updateBoard, X-Y, NewX-NewY, Player),
+	takeAdversary(X-Y, NewX-NewY, _updateBoard, _updateBoard1),
+	applyMovePC(_updateBoard1,  NewBoard, [NewX-NewY|Rest],Player, no).
+
+takeAdversary(X-Y, NewX-NewY, CurrBoard, NewBoard):-
+	ite(X = NewX,
+		(ite(NewY > Y, Y1 is NewY-1, Y1 is NewY+1),
+		putPiece(CurrBoard, NewBoard, X-Y1, 0)
+		),
+		(ite(NewX > X, X1 is NewX-1, X1 is NewX+1),
+		putPiece(CurrBoard, NewBoard, X1-Y, 0)
+		)).
+
+
 /*
 Predicado para encontrar pecas
 */
@@ -85,11 +105,9 @@ convertLetterToNum(L, N):-
 Predicado que atualiza o tabuleiro
 */
 updateBoardSimpleMove(OldBoard, NewBoard, X-Y, NewX-NewY, Player):-
-write('Update Board'),nl,	
-putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
-write('Nao ha error no ut'),nl,
-	putPiece(_UpdatedBoard, NewBoard, NewX-NewY, Player),
-write('Nao ha error no ut'),nl.
+	findPiece(OldBoard, X-Y, King),
+	putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
+	putPiece(_UpdatedBoard, NewBoard, NewX-NewY, King).
 
 updateBoardCaptureMove(OldBoard, NewBoard, X-Y, NewX-NewY, Player):-
   putPiece(OldBoard, _UpdatedBoard, X-Y, 0),

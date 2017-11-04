@@ -1,3 +1,10 @@
+/**/
+mandatoryCapturePC(Board, Player, Moves):-
+	setof(Num-X-Y-Move,captureNumber(Board, X-Y, Num, Player, Move),_L),
+	reverse(_L,[Num-X-Y-Move|Rest]),
+	ite(Num = 0, fail,
+	getPossivelCaptures([Num-X-Y-Move|Rest], Moves, Num)).
+
 /*Prenche array de moves*/
 getPossivelCaptures([], [], _Num).
 getPossivelCaptures([Num-X-Y-Move|Rest], Moves, NumCap):-

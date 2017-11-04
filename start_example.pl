@@ -9,10 +9,12 @@
 :-include('interface/main_menu_choose.pl').
 
 :-include('logic/ask_for_input.pl').
+:-include('logic/choose_moves_PC.pl').
 :-include('logic/loop_game.pl').
 :-include('logic/player_capture.pl').
 :-include('logic/player_king_move.pl').
 :-include('logic/player_man_move.pl').
+:-include('logic/player_move.pl').
 :-include('logic/verifications.pl').
 
 :-include('utils/init.pl').
