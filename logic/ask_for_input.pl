@@ -21,8 +21,12 @@ defineDirection(CurrBoard, NewBoard, X-Y, Player):-
   repeat,
   write('Move the piece.'), nl,
   write('Row (Number)'), read(Y1),
-  write('Column (Letter)'), read(L),convertLetterToNum(L, X1),
+  write('Column (Letter)'), read(L),
+  once(convertLetterToNum(L, X1)),
+  write('antes do convert dir'),  nl,
   convertToDirection(X-Y, X1-Y1, D),
+  write('depois do convert dir'), nl,
+
 ite(
 	Player = 1,
 	validMan1Move(CurrBoard, X-Y, NewX-NewY, D),

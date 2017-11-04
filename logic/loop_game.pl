@@ -14,9 +14,9 @@ game1Vs1(InitialBoard):-
 	repeat,
 		retract(gameState(Board, Player)),
 		once(playGame(Player, Board, NewPlayer, NewBoard1)),
-		/*once(promotedToKing(NewBoard1, NewBoard)),
-		assert(gameState(NewBoard, NewPlayer)),*/
-    assert(gameState(NewBoard1, NewPlayer)),
+		once(promotedToKing(NewBoard1, NewBoard)),
+		assert(gameState(NewBoard, NewPlayer)),
+  %  assert(gameState(NewBoard1, NewPlayer)),
 		gameOver(NewBoard, NewPlayer).
 
 playGame(Player, CurrBoard, NewPlayer, NewBoard):-
@@ -50,7 +50,7 @@ playGamePC(1, Board, 2, NewBoard):-
   validMovesPC(Board, 1, Moves, Simple),
   chooseMovePC(Moves, Move),
   applyMovePC(Board, NewBoard, Move, 1,Simple).
-playGamePC(2, Board, 1, NewBoard):-  
+playGamePC(2, Board, 1, NewBoard):-
   displayPlayer2Turn,
 	showBoard(Board),
   validMovesPC(Board, 2, Moves, Simple),
@@ -78,7 +78,7 @@ chooseMovePC(Moves, Move):-
 	random_member(Move, Moves).%Nivel 1
 
 applyMovePC(CurrBoard, NewBoard, [X-Y,NewX-NewY], Player, yes):-
-write('Simple Move'), nl,	
+write('Simple Move'), nl,
 updateBoardSimpleMove(CurrBoard, NewBoard, X-Y, NewX-NewY, Player).
 applyMovePC(CurrBoard, NewBoard, [X-Y],Player,no).
 applyMovePC(CurrBoard, NewBoard, [X-Y,NewX-NewY|Rest],Player, no):- nl,

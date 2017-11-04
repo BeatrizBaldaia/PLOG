@@ -9,6 +9,13 @@ findPiece(Board, X-Y, Piece):-
 Predicado para obter a direcao de um movimento simples
 */
 convertToDirection(X-Y, X1-Y1, D):-
+  Xaux1 is X - X1,
+  abs(Xaux1, Xaux),
+  Xaux @=< 1,
+  Yaux1 is Y - Y1,
+  abs(Yaux1, Yaux),
+  Yaux @=< 1,
+  (Xaux =< 1, Yaux =< 1) -> (
   ite((X = X1, Y = Y1), D is 0, true),
 
   Y = Y1 -> (%movimento horizontal
@@ -22,7 +29,7 @@ convertToDirection(X-Y, X1-Y1, D):-
   (X1 > X, Y1 > Y) -> D is 3;
   (X1 > X, Y1 < Y) -> D is 9;
   (X1 < X, Y1 > Y) -> D is 1;
-  (X1 < X, Y1 < Y) -> D is 7.
+  (X1 < X, Y1 < Y) -> D is 7).
 
 
 /*

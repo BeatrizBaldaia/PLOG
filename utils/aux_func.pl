@@ -9,3 +9,6 @@ removeCaptures(X-Y, Position, [OneMove | OtherMoves], UpdatedMoves) :-
 	ite(nth1(Position, OneMove, X-Y),
 		(removeCaptures(X-Y, Position, OtherMoves, UpdatedMovesAux), append([OneMove], UpdatedMovesAux, UpdatedMoves)),
 		removeCaptures(X-Y, Position, OtherMoves, UpdatedMoves)).
+
+abs(X,X) :- X >= 0, !.
+abs(X,Y) :- Y is -X.
