@@ -63,8 +63,8 @@ validMovesPC(Board, Player, Moves, yes):-
 	findall(Move,validMovePC(Board, Player, Move),Moves).
 validMovePC(Board, Player, [X-Y,NewX-NewY]):-
 	ite(Player = 1,
-	validMan1Move(Board, X-Y, NewX-NewY, Player, D),
-	validMan2Move(Board, X-Y, NewX-NewY, Player, D)).
+	validMan1Move(Board, X-Y, NewX-NewY, D),
+	validMan2Move(Board, X-Y, NewX-NewY, D)).
 
 
 mandatoryCapturePC(Board, NewBoard, Moves):-
