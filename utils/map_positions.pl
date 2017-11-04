@@ -85,11 +85,8 @@ convertLetterToNum(L, N):-
 Predicado que atualiza o tabuleiro
 */
 updateBoardSimpleMove(OldBoard, NewBoard, X-Y, NewX-NewY, Player):-
-write('Update Board'),nl,	
 putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
-write('Nao ha error no ut'),nl,
-	putPiece(_UpdatedBoard, NewBoard, NewX-NewY, Player),
-write('Nao ha error no ut'),nl.
+	putPiece(_UpdatedBoard, NewBoard, NewX-NewY, Player).
 
 updateBoardCaptureMove(OldBoard, NewBoard, X-Y, NewX-NewY, Player):-
   putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
