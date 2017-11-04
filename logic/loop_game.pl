@@ -41,6 +41,7 @@ gamePCvsPC(InitialBoard):-
 		once(playGamePC(Player, Board, NewPlayer, NewBoard1)),
 		once(promotedToKing(NewBoard1, NewBoard)),
 		assert(keep(NewBoard, NewPlayer)),
+    sleep(3),
 		gameOver(NewBoard, NewPlayer).
 
 playGamePC(Player, Board, NewPlayer, NewBoard):-
