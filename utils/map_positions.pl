@@ -71,3 +71,16 @@ Predicado que atualiza o tabuleiro
 updateBoardSimpleMove(OldBoard, NewBoard, X-Y, NewX-NewY, Player):-
 	putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
 	putPiece(_UpdatedBoard, NewBoard, NewX-NewY, Player).
+
+updateBoardCaptureMove(OldBoard, NewBoard, X-Y, NewX-NewY, Player):-
+  putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
+  ite(X = NewX,
+    X1 is X,
+    (ite(X > NewX, X1 is NewX + 1, X1 is NewX - 1))),
+
+  ite(Y = NewY,
+    Y1 is Y,
+    (ite(Y > NewY, Y1 is NewY + 1, Y1 is NewY - 1))),
+
+  putPiece(_UpdatedBoard, _UpdatedBoard2, X1-Y1, 0),%apagar o capturado
+  putPiece(_UpdatedBoard2, NewBoard, NewX-NewY, Player).
