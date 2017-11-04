@@ -8,91 +8,91 @@ a frente/em sentido ao extremo adversário.
 
 
 %movimento vertical
-validMan1Move(CurrBoard, X-Y, NewX-NewY, Player, 2):-
-	findPiece(CurrBoard, X-Y, Player),
+validMan1Move(CurrBoard, X-Y, NewX-NewY, 2):-
+	findPiece(CurrBoard, X-Y, 1),
 	Y1 is Y + 1,
 	findPiece(CurrBoard, X-Y1, 0),
 	NewX is X, NewY is Y1.
 %movimento linear vertical (salta por cima de pecas do mesmo tipo)
-validMan1Move(CurrBoard, X-Y, NewX-NewY, Player, 2):-
-  findPiece(CurrBoard, X-Y, Player),
+validMan1Move(CurrBoard, X-Y, NewX-NewY, 2):-
+  findPiece(CurrBoard, X-Y, 1),
   Y1 is Y + 1,
-  findPiece(CurrBoard, X-Y1, Player),
-  validMan1Move(CurrBoard, X-Y1, NewX-NewY, Player, 2).
+  findPiece(CurrBoard, X-Y1, 1),
+  validMan1Move(CurrBoard, X-Y1, NewX-NewY, 2).
 
 %movimento diagonal esquerda
-validMan1Move(CurrBoard, X-Y, NewX-NewY, Player, 1):-
-	findPiece(CurrBoard, X-Y, Player),
+validMan1Move(CurrBoard, X-Y, NewX-NewY, 1):-
+	findPiece(CurrBoard, X-Y, 1),
 	X1 is X - 1,
 	Y1 is Y + 1,
 	findPiece(CurrBoard, X1-Y1, 0),
 	NewX is X1, NewY is Y1.
 %movimento linear diagonal esquerda (salta por cima de pecas do mesmo tipo)
-validMan1Move(CurrBoard, X-Y, NewX-NewY, Player, 1):-
-  findPiece(CurrBoard, X-Y, Player),
+validMan1Move(CurrBoard, X-Y, NewX-NewY, 1):-
+  findPiece(CurrBoard, X-Y, 1),
   X1 is X - 1,
   Y1 is Y + 1,
-	findPiece(CurrBoard, X1-Y1, Player),
-  validMan1Move(CurrBoard, X1-Y1, NewX-NewY, Player, 1).
+	findPiece(CurrBoard, X1-Y1, 1),
+  validMan1Move(CurrBoard, X1-Y1, NewX-NewY, 1).
 
 %movimento diagonal direita
-validMan1Move(CurrBoard, X-Y, NewX-NewY, Player, 3):-
-	findPiece(CurrBoard, X-Y, Player),
+validMan1Move(CurrBoard, X-Y, NewX-NewY, 3):-
+	findPiece(CurrBoard, X-Y, 1),
 	X1 is X + 1,
 	Y1 is Y + 1,
 	findPiece(CurrBoard, X1-Y1, 0),
 	NewX is X1, NewY is Y1.
 %movimento linear diagonal direita (salta por cima de pecas do mesmo tipo)
-validMan1Move(CurrBoard, X-Y, NewX-NewY, Player, 3):-
-	findPiece(CurrBoard, X-Y, Player),
+validMan1Move(CurrBoard, X-Y, NewX-NewY, 3):-
+	findPiece(CurrBoard, X-Y, 1),
     X1 is X + 1,
 	Y1 is Y + 1,
-	findPiece(CurrBoard, X1-Y1, Player),
-	validMan1Move(CurrBoard, X1-Y1, NewX-NewY, Player, 3).
+	findPiece(CurrBoard, X1-Y1, 1),
+	validMan1Move(CurrBoard, X1-Y1, NewX-NewY, 3).
 /*
 validMan1Move(CurrBoard, X-Y, NewX-NewY, Player, D):-
 	fail.
 */
 
 %movimento vertical
-validMan2Move(CurrBoard, X-Y, NewX-NewY, Player, 8):-
-	findPiece(CurrBoard, X-Y, Player),
+validMan2Move(CurrBoard, X-Y, NewX-NewY, 8):-
+	findPiece(CurrBoard, X-Y, 2),
 	Y1 is Y - 1,
 	findPiece(CurrBoard, X-Y1, 0),
 	NewX is X, NewY is Y1.
 %movimento linear vertical (salta por cima de pecas do mesmo tipo)
-validMan2Move(CurrBoard, X-Y, NewX-NewY, Player, 8):-
-  findPiece(CurrBoard, X-Y, Player),
+validMan2Move(CurrBoard, X-Y, NewX-NewY, 8):-
+  findPiece(CurrBoard, X-Y, 2),
   Y1 is Y - 1,
-  findPiece(CurrBoard, X-Y1, Player),
-  validMan2Move(CurrBoard, X-Y1, NewX-NewY, Player, 8).
+  findPiece(CurrBoard, X-Y1, 2),
+  validMan2Move(CurrBoard, X-Y1, NewX-NewY, 8).
 
 %movimento diagonal esquerda
-validMan2Move(CurrBoard, X-Y, NewX-NewY, Player, 4):-
-	findPiece(CurrBoard, X-Y, Player),
+validMan2Move(CurrBoard, X-Y, NewX-NewY, 4):-
+	findPiece(CurrBoard, X-Y, 2),
 	X1 is X - 1,
 	Y1 is Y - 1,
 	findPiece(CurrBoard, X1-Y1, 0),
 	NewX is X1, NewY is Y1.
 %movimento linear diagonal esquerda (salta por cima de pecas do mesmo tipo)
-validMan2Move(CurrBoard, X-Y, NewX-NewY, Player, 4):-
-  findPiece(CurrBoard, X-Y, Player),
+validMan2Move(CurrBoard, X-Y, NewX-NewY, 4):-
+  findPiece(CurrBoard, X-Y, 2),
   X1 is X - 1,
   Y1 is Y - 1,
-	findPiece(CurrBoard, X1-Y1, Player),
-  validMan2Move(CurrBoard, X1-Y1, NewX-NewY, Player, 4).
+	findPiece(CurrBoard, X1-Y1, 2),
+  validMan2Move(CurrBoard, X1-Y1, NewX-NewY, 4).
 
 %movimento diagonal direita
-validMan2Move(CurrBoard, X-Y, NewX-NewY, Player, 6):-
-	findPiece(CurrBoard, X-Y, Player),
+validMan2Move(CurrBoard, X-Y, NewX-NewY, 6):-
+	findPiece(CurrBoard, X-Y, 2),
 	X1 is X + 1,
 	Y1 is Y - 1,
 	findPiece(CurrBoard, X1-Y1, 0),
 	NewX is X1, NewY is Y1.
 %movimento linear diagonal direita (salta por cima de pecas do mesmo tipo)
-validMan2Move(CurrBoard, X-Y, NewX-NewY, Player, 6):-
-	findPiece(CurrBoard, X-Y, Player),
+validMan2Move(CurrBoard, X-Y, NewX-NewY, 6):-
+	findPiece(CurrBoard, X-Y, 2),
   X1 is X + 1,
 	Y1 is Y - 1,
-	findPiece(CurrBoard, X1-Y1, Player),
-	validMan2Move(CurrBoard, X1-Y1, NewX-NewY, Player, 6).
+	findPiece(CurrBoard, X1-Y1, 2),
+	validMan2Move(CurrBoard, X1-Y1, NewX-NewY, 6).

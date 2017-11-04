@@ -20,15 +20,13 @@ defineDirection(CurrBoard, NewBoard, X-Y, Player):-
   member(Player, [1, 2]), !,
   repeat,
   write('Move the piece.'), nl,
-  read(D),
+  write('Row (Number)'), read(Y1),
+  write('Column (Letter)'), read(L),convertLetterToNum(L, X1),
+  convertToDirection(X-Y, X1-Y1, D),
 ite(
 	Player = 1,
-	(write('Move player 1'), nl,
-		write(X),write('-'),write(Y),nl,write(D),nl,
-		validMan1Move(CurrBoard, X-Y, NewX-NewY, 1, D),
-		write('ERRO')),
-	(write('Move player 2'), nl,
-		validMan2Move(CurrBoard, X-Y, NewX-NewY, 2, D))),
+	validMan1Move(CurrBoard, X-Y, NewX-NewY, D),
+	validMan2Move(CurrBoard, X-Y, NewX-NewY, D)),
   updateBoardSimpleMove(CurrBoard, NewBoard, X-Y, NewX-NewY, Player),
   showBoard(NewBoard).
 
@@ -38,15 +36,12 @@ defineDirection(CurrBoard, FinalBoard, X-Y, Player):-
   write('Move the piece.'), nl,
   read(D),
   member(D, [1, 2, 3, 4, 6, 7, 8, 9]),
-  write('Hate My'),
   keepMovingKing(CurrBoard, FinalBoard, X-Y, Player, D).
 
 keepMovingKing(CurrBoard, FinalBoard, X-Y, Player, D):-
-  ite(
-	Player = 11,
-	(write('Move player 1'), nl, validKing1Move(CurrBoard, X-Y, NewX-NewY, Player, D)),
-	(write('Move player 2'), nl, validKing2Move(CurrBoard, X-Y, NewX-NewY, Player, D))),
-  updateBoardSimpleMove(CurrBoard, NewBoard, X-Y, NewX-NewY, Player),
+  write('Move player '), write(Player), nl,
+  validKingMove(CurrBoard, X-Y, NewX-NewY, Player, D),
+	updateBoardSimpleMove(CurrBoard, NewBoard, X-Y, NewX-NewY, Player),
   showBoard(NewBoard),
   ite(
 	keepMoving(D),
@@ -65,8 +60,7 @@ keepMoving(Direction):-
 
 
 /*
-Listar as capturas obrigatorias possiveis
-paea o jogador escolher
+Movimento de captura
 */
 
 selectCapturePiece(CurrBoard, Player, Moves, MaxCaptureNum, NewBoard) :-
@@ -79,7 +73,7 @@ selectCapturePiece(CurrBoard, Player, Moves, MaxCaptureNum, NewBoard) :-
   isCapturePiece(X-Y, Moves),
   removeCaptures(X-Y, 1, Moves, UpdatedMoves),
   \+length(UpdatedMoves, 0), !,
-  nl, write('Move piece'), nl,
+  nl, write('>>>>>>>>>>>>>>>>>>>>>MOVE PIECE<<<<<<<<<<<<<<<<<<<<<'), nl, nl, nl,
   moveCapturePiece(CurrBoard, X-Y, Player, UpdatedMoves, MaxCaptureNum, 2, NewBoard).
 
 
@@ -88,6 +82,7 @@ moveCapturePiece(CurrBoard, X-Y, Player, Moves, MaxCaptureNum, MaxCaptureNum, Ne
   NewBoard = CurrBoard.
 
 moveCapturePiece(CurrBoard,  X-Y, Player, Moves, MaxCaptureNum, CurrNum, NewBoard) :-
+  showBoard(CurrBoard),
   write('Row (Number)'), read(Y1),
   write('Column (Letter)'), read(L), convertLetterToNum(L, X1),
   findPiece(CurrBoard, X1-Y1, 0),
