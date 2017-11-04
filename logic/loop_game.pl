@@ -38,8 +38,6 @@ gamePCvsPC(InitialBoard):-
 	repeat,
 		retract(keep(Board, Player)),
 		once(playGamePC(Player, Board, NewPlayer, NewBoard1)),
-		write('PC'),
-		write(NewBoard1),
 		once(promotedToKing(NewBoard1, NewBoard)),
 		write('King'),
 		assert(keep(NewBoard, NewPlayer)),
@@ -51,17 +49,13 @@ playGamePC(1, Board, 2, NewBoard):-
 	showBoard(Board),
   validMovesPC(Board, 1, Moves, Simple),
   chooseMovePC(Moves, Move),
-	write(Board), write(Move),nl,
-  applyMovePC(Board, NewBoard, Move, Simple),
-	nl,write(NewBoard),nl,nl.
-playGamePC(2, Board, 1, NewBoard):-
+  applyMovePC(Board, NewBoard, Move, 1,Simple).
+playGamePC(2, Board, 1, NewBoard):-  
   displayPlayer2Turn,
 	showBoard(Board),
   validMovesPC(Board, 2, Moves, Simple),
   chooseMovePC(Moves, Move),
-	write(Board), write(Move),nl,
-  applyMovePC(Board, NewBoard, Move, Simple),
-	write(NewBoard),nl,nl.
+  applyMovePC(Board, NewBoard, Move, 2,Simple).
 %DOUBLE
 validMovesPC(Board, Player, Moves, no):-
 	mandatoryCapturePC(Board, Player, Moves).
@@ -81,22 +75,24 @@ mandatoryCapturePC(Board, NewBoard, Moves):-
 
 
 chooseMovePC(Moves, Move):-
-	random_member(Move, Moves),
-	write('Rand').%Nivel 1
+	random_member(Move, Moves).%Nivel 1
 
-applyMovePC(CurrBoard, NewBoard, [X-Y|NewX-NewY], yes):-
-	updateBoardSimpleMove(CurrBoard, NewBoard, X-Y, NewX-NewY, Player).
-applyMovePC(CurrBoard, NewBoard, [X-Y], no).
-applyMovePC(CurrBoard, NewBoard, [X-Y,NewX-NewY|Rest], no):-
+applyMovePC(CurrBoard, NewBoard, [X-Y,NewX-NewY], Player, yes):-
+write('Simple Move'), nl,	
+updateBoardSimpleMove(CurrBoard, NewBoard, X-Y, NewX-NewY, Player).
+applyMovePC(CurrBoard, NewBoard, [X-Y],Player,no).
+applyMovePC(CurrBoard, NewBoard, [X-Y,NewX-NewY|Rest],Player, no):- nl,
+	write('Viva la vida'), nl,
 	updateBoardSimpleMove(CurrBoard, _updateBoard, X-Y, NewX-NewY, Player),
 	takeAdversary(X-Y, NewX-NewY, _updateBoard, _updateBoard1),
-	applyMovePC(_updateBoard1,  NewBoard, [NewX-NewY|Rest], no).
+	applyMovePC(_updateBoard1,  NewBoard, [NewX-NewY|Rest],Player, no).
+
 takeAdversary(X-Y, NewX-NewY, CurrBoard, NewBoard):-
 	ite(X = NewX,
-		(itf(NewY > Y, Y1 is NewY-1, Y1 is NewY+1),
+		(ite(NewY > Y, Y1 is NewY-1, Y1 is NewY+1),
 		putPiece(CurrBoard, NewBoard, X-Y1, 0)
 		),
-		(itf(NewX > X, X1 is NewX-1, X1 is NewX+1),
+		(ite(NewX > X, X1 is NewX-1, X1 is NewX+1),
 		putPiece(CurrBoard, NewBoard, X1-Y, 0)
 		)).
 	

@@ -4,22 +4,24 @@ Predicado para verificar se a peça
 vai ser promovida a rei
 */
 promotedToKing(OldBoard, NewBoard):-
-	write('First'),
+	write('First'),nl,
 	promotedToKing1(OldBoard, _UpdatedBoard),
-		write('set'),
+		write('set'),nl,
 	promotedToKing2(_UpdatedBoard, NewBoard).
 
 promotedToKing1(OldBoard, NewBoard):-
-	write('Entrou 1'),
+	write('Entrou 1'),nl,
 	ite(findPiece(OldBoard, X-8, 1),
-		(write('QTF'), putPiece(OldBoard, _UpdatedBoard, X-8, 11),
+		(write('QTF'),nl, putPiece(OldBoard, _UpdatedBoard, X-8, 11),
 		promotedToKing1(_UpdatedBoard, NewBoard)),
-	(write('return'),true)).
+	(write('return'),nl,NewBoard = OldBoard)).
+
 promotedToKing2(OldBoard, NewBoard):-
+	write('Entrou 2'),nl,
 	ite(findPiece(OldBoard, X-1, 2),
-		(putPiece(OldBoard, _UpdatedBoard, X-1, 22),
-		promotedToKing1(_UpdatedBoard, NewBoard)),
-	true).
+		(write('QTF'),nl, putPiece(OldBoard, _UpdatedBoard, X-1, 22),
+		promotedToKing2(_UpdatedBoard, NewBoard)),
+	(write('return'),nl,NewBoard = OldBoard)).
 /*
 promotedToKing1(NewBoard, NewBoard):-
 	write('Nao ha reis'), nl,
