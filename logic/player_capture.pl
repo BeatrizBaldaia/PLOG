@@ -1,13 +1,22 @@
+/*Prenche array de moves*/
+getPossivelCaptures([], [], _Num).
+getPossivelCaptures([Num-X-Y-Move|Rest], Moves, NumCap):-
+	ite(Num = NumCap,
+		(getPossivelCaptures(Rest, Mov, NumCap),
+			Moves = [Move|Mov]),
+		Moves = []).
+
+
 /*
 Predicado para contar o numero
 de capturas possivel
 */
-captureNumber(OldBoard, X-Y, 0, Player):-
+captureNumber(OldBoard, X-Y, 0, Player,[X-Y]):-
 	\+possibleCapture(OldBoard, X-Y, NewBoard, NewX-NewY, Player).
 
-captureNumber(OldBoard, X-Y, Num, Player):-
+captureNumber(OldBoard, X-Y, Num, Player,[X-Y|Next]):-
 	possibleCapture(OldBoard, X-Y, NewBoard, NewX-NewY, Player),
-	captureNumber(NewBoard, NewX-NewY, NNum, Player),
+	captureNumber(NewBoard, NewX-NewY, NNum, Player, Next),
 	Num is NNum+1.
 
 /*
@@ -15,7 +24,7 @@ Predicado para verificar a captura de uma peça
 */
 possibleCapture(OldBoard, X-Y, NewBoard, NewX-NewY, Player):-
 	isKing(Player), !,
-	possibleKingCapture(OldBoard, X-Y, NewBoard, NewX-NewY, Player, Direction).
+	possibleCaptureKing(OldBoard, X-Y, NewBoard, NewX-NewY, Player, Direction).
 /*Playeres Normais*/
 possibleCapture(OldBoard, X-Y, NewBoard, NewX-Y, Player):-%Capturar para a esquerda
 	findPiece(OldBoard, X-Y, Player),
@@ -25,7 +34,7 @@ possibleCapture(OldBoard, X-Y, NewBoard, NewX-Y, Player):-%Capturar para a esque
 	NewX is X - 2,
 	findPiece(OldBoard, NewX-Y, 0),
 	putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
-	putPiece(_UpdatedBoard, _UpdatedBoard2, X1-Y, 0),
+	putPiece(_UpdatedBoard, _UpdatedBoard2, X1-Y, 33),
 	putPiece(_UpdatedBoard2, NewBoard, NewX-Y, Player).
 possibleCapture(OldBoard, X-Y, NewBoard, NewX-Y, Player):-%Capturar para a direita
 	findPiece(OldBoard, X-Y, Player),
@@ -35,7 +44,7 @@ possibleCapture(OldBoard, X-Y, NewBoard, NewX-Y, Player):-%Capturar para a direi
 	NewX is X + 2,
 	findPiece(OldBoard, NewX-Y, 0),
 	putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
-	putPiece(_UpdatedBoard, _UpdatedBoard2, X1-Y, 0),
+	putPiece(_UpdatedBoard, _UpdatedBoard2, X1-Y, 33),
 	putPiece(_UpdatedBoard2, NewBoard, NewX-Y, Player).
 possibleCapture(OldBoard, X-Y, NewBoard, X-NewY, Player):-%Capturar para cima
 	findPiece(OldBoard, X-Y, Player),
@@ -45,7 +54,7 @@ possibleCapture(OldBoard, X-Y, NewBoard, X-NewY, Player):-%Capturar para cima
 	NewY is Y + 2,
 	findPiece(OldBoard, X-NewY, 0),
 	putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
-	putPiece(_UpdatedBoard, _UpdatedBoard2, X-Y1, 0),
+	putPiece(_UpdatedBoard, _UpdatedBoard2, X-Y1, 33),
 	putPiece(_UpdatedBoard2, NewBoard, X-NewY, Player).
 possibleCapture(OldBoard, X-Y, NewBoard, X-NewY, Player):-%Capturar para baixo
 	findPiece(OldBoard, X-Y, Player),
@@ -55,7 +64,7 @@ possibleCapture(OldBoard, X-Y, NewBoard, X-NewY, Player):-%Capturar para baixo
 	NewY is Y - 2,
 	findPiece(OldBoard, X-NewY, 0),
 	putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
-	putPiece(_UpdatedBoard, _UpdatedBoard2, X-Y1, 0),
+	putPiece(_UpdatedBoard, _UpdatedBoard2, X-Y1, 33),
 	putPiece(_UpdatedBoard2, NewBoard, X-NewY, Player).
 
 /*
@@ -71,7 +80,7 @@ possibleCaptureKing(OldBoard, X-Y, NewBoard, NewX-Y, Player, Direction):-%Captur
 	NewX is X - 2,
 	findPiece(OldBoard, NewX-Y, 0),
 	putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
-	putPiece(_UpdatedBoard, _UpdatedBoard2, X1-Y, 0),
+	putPiece(_UpdatedBoard, _UpdatedBoard2, X1-Y, 33),
 	putPiece(_UpdatedBoard2, NewBoard, NewX-Y, Player).
 possibleCaptureKing(OldBoard, X-Y, NewBoard, NewX-Y, Player, Direction):-%Capturar em X mais
 	Direction = 2,
@@ -82,7 +91,7 @@ possibleCaptureKing(OldBoard, X-Y, NewBoard, NewX-Y, Player, Direction):-%Captur
 	NewX is X + 2,
 	findPiece(OldBoard, NewX-Y, 0),
 	putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
-	putPiece(_UpdatedBoard, _UpdatedBoard2, X1-Y, 0),
+	putPiece(_UpdatedBoard, _UpdatedBoard2, X1-Y, 33),
 	putPiece(_UpdatedBoard2, NewBoard, NewX-Y, Player).
 possibleCaptureKing(OldBoard, X-Y, NewBoard, X-NewY, Player, Direction):-%Capturar em Y mais
 	Direction = 4,
@@ -93,7 +102,7 @@ possibleCaptureKing(OldBoard, X-Y, NewBoard, X-NewY, Player, Direction):-%Captur
 	NewY is Y + 2,
 	findPiece(OldBoard, X-NewY, 0),
 	putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
-	putPiece(_UpdatedBoard, _UpdatedBoard2, X-Y1, 0),
+	putPiece(_UpdatedBoard, _UpdatedBoard2, X-Y1, 33),
 	putPiece(_UpdatedBoard2, NewBoard, X-NewY, Player).
 possibleCaptureKing(OldBoard, X-Y, NewBoard, X-NewY, Player, Direction):-%Capturar em Y menos
 	Direction = 3,
@@ -104,7 +113,7 @@ possibleCaptureKing(OldBoard, X-Y, NewBoard, X-NewY, Player, Direction):-%Captur
 	NewY is Y - 2,
 	findPiece(OldBoard, X-NewY, 0),
 	putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
-	putPiece(_UpdatedBoard, _UpdatedBoard2, X-Y1, 0),
+	putPiece(_UpdatedBoard, _UpdatedBoard2, X-Y1, 33),
 	putPiece(_UpdatedBoard2, NewBoard, X-NewY, Player).
 possibleCaptureKing(OldBoard, X-Y, NewBoard, X-NewY, Player, Direction):-%Capturar em Y menos
 	Direction = 3,

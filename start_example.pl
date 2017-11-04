@@ -1,4 +1,6 @@
 :-use_module(library(lists)).
+:-use_module(library(random)).
+
 
 :-include('interface/board_display.pl').
 :-include('interface/labels_display.pl').
