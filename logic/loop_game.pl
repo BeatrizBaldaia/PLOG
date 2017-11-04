@@ -20,6 +20,7 @@ game1Vs1(InitialBoard):-
 		gameOver(NewBoard, NewPlayer).
 
 playGame(Player, CurrBoard, NewPlayer, NewBoard):-
+  write('\33\[2J'),
   ite(Player = 1, displayPlayer1Turn, displayPlayer2Turn),
   mandatoryCapture(CurrBoard, NewBoard, Player),
   ite(Player = 1, NewPlayer is 2, NewPlayer is 1).
@@ -43,6 +44,7 @@ gamePCvsPC(InitialBoard):-
 		gameOver(NewBoard, NewPlayer).
 
 playGamePC(Player, Board, NewPlayer, NewBoard):-
+  write('\33\[2J'),
   ite(Player = 1,(displayPlayer1Turn, NewPlayer = 2),(displayPlayer2Turn, NewPlayer = 1)),
   showBoard(Board),
   validMovesPC(Board, Player, Moves, Simple),
