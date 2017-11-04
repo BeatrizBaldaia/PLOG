@@ -58,7 +58,6 @@ validMovePC(Board, Player, [X-Y,NewX-NewY]):-
 	validMan1Move(Board, X-Y, NewX-NewY, D),
 	validMan2Move(Board, X-Y, NewX-NewY, D)).
 validMovePC(Board, Player, [X-Y,NewX-NewY]):-
-	write('Trying to find valid King Move'),nl,
 	ite(Player = 1,
 	validKingMove(Board, X-Y, NewX-NewY, 11, D),
 	validKingMove(Board, X-Y, NewX-NewY, 22, D)).
@@ -66,7 +65,6 @@ validMovePC(Board, Player, [X-Y,NewX-NewY]):-
 mandatoryCapturePC(Board, Player, Moves):-
 	setof(Num-X-Y-Move,captureNumber(Board, X-Y, Num, Player, Move),_L),
 	reverse(_L,[Num-X-Y-Move|Rest]),
-	write('Num Capt'),write(Num),nl,
 	ite(Num = 0, fail,
 	getPossivelCaptures([Num-X-Y-Move|Rest], Moves, Num)).
 
