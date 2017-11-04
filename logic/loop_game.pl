@@ -51,5 +51,21 @@ playGamePC(Player, Board, NewPlayer, NewBoard):-
   showBoard(Board),
   validMovesPC(Board, Player, Moves, Simple),
   chooseMovePC(Moves, Move),
-  applyMovePC(Board, NewBoard, Move, Player,Simple).
+  applyMovePC(Board, NewBoard, Move, Player, Simple).
+
+
+game1vsPC(InitialBoard):-
+  retractall(gameState(_A,_B)),
+  assert(gameState(InitialBoard, 1)),
+	repeat,
+		retract(gameState(Board, Player)),
+		once(playGamePCorPlayer(Player, Board, NewPlayer, NewBoard1)),
+		once(promotedToKing(NewBoard1, NewBoard)),
+		assert(gameState(NewBoard, NewPlayer)),
+		gameOver(NewBoard, NewPlayer).
+
+playGamePCorPlayer(Player, Board, NewPlayer, NewBoard):-
+	ite(Player = 1,
+		playGame(Player, Board, NewPlayer, NewBoard),
+		playGamePC(Player, Board, NewPlayer, NewBoard)).
 

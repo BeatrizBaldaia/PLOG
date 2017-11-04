@@ -15,6 +15,7 @@ startPlay(1):-
 startPlay(3):-
   create_board(Board),
   gamePCvsPC(Board).
-/*startPlay(2):-
-  startGame(...).
-*/
+startPlay(2):-
+  create_board(Board),
+  game1vsPC(Board).
+

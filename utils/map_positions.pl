@@ -105,8 +105,9 @@ convertLetterToNum(L, N):-
 Predicado que atualiza o tabuleiro
 */
 updateBoardSimpleMove(OldBoard, NewBoard, X-Y, NewX-NewY, Player):-
-putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
-	putPiece(_UpdatedBoard, NewBoard, NewX-NewY, Player).
+	findPiece(OldBoard, X-Y, King),
+	putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
+	putPiece(_UpdatedBoard, NewBoard, NewX-NewY, King).
 
 updateBoardCaptureMove(OldBoard, NewBoard, X-Y, NewX-NewY, Player):-
   putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
