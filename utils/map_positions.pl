@@ -8,13 +8,22 @@ findPiece(Board, X-Y, Piece):-
 /*
 Predicado para obter a direcao de um movimento simples
 */
-getManDirection(Player, X-Y, X1-Y1, D):-
-  X > X1 -> D is 4;
-  X < X1 -> D is 6;
-  Player = 1 -> (
-    D is 2
+convertToDirection(X-Y, X1-Y1, D):-
+  ite((X = X1, Y = Y1), D is 0, true),
+
+  Y = Y1 -> (%movimento horizontal
+    X > X1 -> D is 4;
+    X < X1 -> D is 6
   );
-    D is 8.
+  X = X1 -> (%movimento vertical
+    Y > Y1 -> D is 8;
+    Y < Y1 -> D is 2
+  );
+  (X1 > X, Y1 > Y) -> D is 3;
+  (X1 > X, Y1 < Y) -> D is 9;
+  (X1 < X, Y1 > Y) -> D is 1;
+  (X1 < X, Y1 < Y) -> D is 7.
+
 
 /*
 Predicados para colocar/mover peças no Tabuleiro

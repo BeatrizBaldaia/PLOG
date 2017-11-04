@@ -7,30 +7,30 @@
   \+gameOver(NewBoard2, 1),
   game1Vs1(NewBoard2)
   ).*/
+:- dynamic gameState/2.
 
 game1Vs1(InitialBoard):-
-  assert(keep(InitialBoard, 1)),
+  assert(gameState(InitialBoard, 1)),
 	repeat,
-		retract(keep(Board, Player)),
+		retract(gameState(Board, Player)),
 		once(playGame(Player, Board, NewPlayer, NewBoard1)),
-		once(promotedToKing(NewBoard1, NewBoard)),
-		assert(keep(NewBoard, NewPlayer)),
+		/*once(promotedToKing(NewBoard1, NewBoard)),
+		assert(gameState(NewBoard, NewPlayer)),*/
+    assert(gameState(NewBoard1, NewPlayer)),
 		gameOver(NewBoard, NewPlayer).
 
-playGame(1, Board, 2, NewBoard):-
-  displayPlayer1Turn,
-  selectPiece(Board, NewBoard, 1).
-playGame(2, Board, 1, NewBoard):-
-  displayPlayer2Turn,
-  selectPiece(Board, NewBoard, 2).
+playGame(Player, CurrBoard, NewPlayer, NewBoard):-
+  ite(Player = 1, displayPlayer1Turn, displayPlayer2Turn),
+  mandatoryCapture(CurrBoard, NewBoard, Player),
+  ite(Player = 1, NewPlayer is 2, NewPlayer is 1).
 
-mandatoryCapture(Board, NewBoard, Player):-
-	setof(Num-X-Y-Move,captureNumber(Board,X-Y,Num,Player,Move),_L), 
+mandatoryCapture(CurrBoard, NewBoard, Player):-
+	setof(Num-X-Y-Move,captureNumber(CurrBoard,X-Y,Num,Player,Move),_L),
 	reverse(_L,[Num-X-Y-Move|Rest]),
 	ite(Num = 0,
-		selectPiece(Board, NewBoard, Player),
-		(getPossivelCaptures([Num-X-Y-Move|Rest], Moves, Num),		
-		selectPieceCapture(Board, NewBoard, Player, Moves, Num)
+		selectPiece(CurrBoard, NewBoard, Player),
+		(getPossivelCaptures([Num-X-Y-Move|Rest], Moves, Num),
+		selectCapturePiece(CurrBoard, Player, Moves, Num, NewBoard)
 		)).
 
 gamePCvsPC(InitialBoard):-
@@ -68,7 +68,7 @@ validMovePC(Board, Player, [X-Y,NewX-NewY]):-
 
 
 mandatoryCapturePC(Board, NewBoard, Moves):-
-	setof(Num-X-Y-Move,captureNumber(Board,X-Y,Num,Player,Move),_L), 
+	setof(Num-X-Y-Move,captureNumber(Board,X-Y,Num,Player,Move),_L),
 	reverse(_L,[Num-X-Y-Move|Rest]),
 	ite(Num = 0, fail,
 	getPossivelCaptures([Num-X-Y-Move|Rest], Moves, Num)).
@@ -95,11 +95,3 @@ takeAdversary(X-Y, NewX-NewY, CurrBoard, NewBoard):-
 		(ite(NewX > X, X1 is NewX-1, X1 is NewX+1),
 		putPiece(CurrBoard, NewBoard, X1-Y, 0)
 		)).
-	
-
-
-
-
-
-
-
