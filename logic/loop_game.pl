@@ -35,6 +35,7 @@ mandatoryCapture(CurrBoard, NewBoard, Player):-
 		)).
 
 gamePCvsPC(InitialBoard):-
+	retractall(keep(_A,_B)),
   assert(keep(InitialBoard, 1)),
 	repeat,
 		retract(keep(Board, Player)),
