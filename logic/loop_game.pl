@@ -60,7 +60,7 @@ validMovePC(Board, Player, [X-Y,NewX-NewY]):-
 
 
 mandatoryCapturePC(Board, Player, Moves):-
-	setof(Num-X-Y-Move,captureNumber(Board, X-Y, Num, Player,Move),_L),
+	setof(Num-X-Y-Move,captureNumber(Board, X-Y, Num, Player, Move),_L),
 	reverse(_L,[Num-X-Y-Move|Rest]),
 	write('Num Capt'),write(Num),nl,
 	ite(Num = 0, fail,
@@ -73,12 +73,8 @@ applyMovePC(CurrBoard, NewBoard, [X-Y,NewX-NewY], Player, yes):-
   updateBoardSimpleMove(CurrBoard, NewBoard, X-Y, NewX-NewY, Player).
 applyMovePC(NewBoard, NewBoard, [X-Y],Player,no).
 applyMovePC(CurrBoard, NewBoard, [X-Y,NewX-NewY|Rest],Player, no):-
-	write(X),	write(Y),	write(NewX),	write(NewY),nl,
 	updateBoardSimpleMove(CurrBoard, _updateBoard, X-Y, NewX-NewY, Player),
-	showBoard(_updateBoard),nl,
 	takeAdversary(X-Y, NewX-NewY, _updateBoard, _updateBoard1),
-	showBoard(_updateBoard1),nl,
-	write(X),	write(X),	write(NewX),	write(NewY),nl,
 	applyMovePC(_updateBoard1,  NewBoard, [NewX-NewY|Rest],Player, no).
 
 takeAdversary(X-Y, NewX-NewY, CurrBoard, NewBoard):-

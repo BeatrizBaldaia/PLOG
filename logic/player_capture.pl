@@ -23,10 +23,13 @@ captureNumber(OldBoard, X-Y, Num, Player,[X-Y|Next]):-
 Predicado para verificar a captura de uma peça
 */
 possibleCapture(OldBoard, X-Y, NewBoard, NewX-NewY, Player):-
-	isKing(Player), !,
-	possibleCaptureKing(OldBoard, X-Y, NewBoard, NewX-NewY, Player, Direction).
+ite(Player = 1,
+	possibleCaptureKing(OldBoard, X-Y, NewBoard, NewX-NewY, 11, Direction),
+	possibleCaptureKing(OldBoard, X-Y, NewBoard, NewX-NewY, 22, Direction)).
+possibleCapture(OldBoard, X-Y, NewBoard, NewX-NewY, Player):-
+	possibleCaptureMan(OldBoard, X-Y, NewBoard, NewX-NewY, Player).
 /*Playeres Normais*/
-possibleCapture(OldBoard, X-Y, NewBoard, NewX-Y, Player):-%Capturar para a esquerda
+possibleCaptureMan(OldBoard, X-Y, NewBoard, NewX-Y, Player):-%Capturar para a esquerda
 	findPiece(OldBoard, X-Y, Player),
 	X1 is X - 1,
 	findPiece(OldBoard, X1-Y, _A),
@@ -36,7 +39,7 @@ possibleCapture(OldBoard, X-Y, NewBoard, NewX-Y, Player):-%Capturar para a esque
 	putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
 	putPiece(_UpdatedBoard, _UpdatedBoard2, X1-Y, 33),
 	putPiece(_UpdatedBoard2, NewBoard, NewX-Y, Player).
-possibleCapture(OldBoard, X-Y, NewBoard, NewX-Y, Player):-%Capturar para a direita
+possibleCaptureMan(OldBoard, X-Y, NewBoard, NewX-Y, Player):-%Capturar para a direita
 	findPiece(OldBoard, X-Y, Player),
 	X1 is X + 1,
 	findPiece(OldBoard, X1-Y, _A),
@@ -46,7 +49,7 @@ possibleCapture(OldBoard, X-Y, NewBoard, NewX-Y, Player):-%Capturar para a direi
 	putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
 	putPiece(_UpdatedBoard, _UpdatedBoard2, X1-Y, 33),
 	putPiece(_UpdatedBoard2, NewBoard, NewX-Y, Player).
-possibleCapture(OldBoard, X-Y, NewBoard, X-NewY, Player):-%Capturar para cima
+possibleCaptureMan(OldBoard, X-Y, NewBoard, X-NewY, Player):-%Capturar para cima
 	findPiece(OldBoard, X-Y, Player),
 	Y1 is Y + 1,
 	findPiece(OldBoard, X-Y1, _A),
@@ -56,7 +59,7 @@ possibleCapture(OldBoard, X-Y, NewBoard, X-NewY, Player):-%Capturar para cima
 	putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
 	putPiece(_UpdatedBoard, _UpdatedBoard2, X-Y1, 33),
 	putPiece(_UpdatedBoard2, NewBoard, X-NewY, Player).
-possibleCapture(OldBoard, X-Y, NewBoard, X-NewY, Player):-%Capturar para baixo
+possibleCaptureMan(OldBoard, X-Y, NewBoard, X-NewY, Player):-%Capturar para baixo
 	findPiece(OldBoard, X-Y, Player),
 	Y1 is Y - 1,
 	findPiece(OldBoard, X-Y1, _A),
