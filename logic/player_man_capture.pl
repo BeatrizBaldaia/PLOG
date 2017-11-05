@@ -28,6 +28,8 @@ canManCapture(CurrBoard, Player, X-Y, Direction, NewX-NewY) :-
 
 
 getCapturesList(CurrBoard, X-Y, Player, Paths, NCaptures) :-
+  member(X, [1, 2, 3, 4, 5, 6, 7, 8, 9]),
+  member(Y, [1, 2, 3, 4, 5, 6, 7, 8, 9]),
   assert(maxSteps(0)),
   assert(capturesList([])),
   findCapturesPaths(CurrBoard, X-Y, Player, [X-Y], 0),

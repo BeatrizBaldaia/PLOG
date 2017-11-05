@@ -26,11 +26,12 @@ playGame(Player, CurrBoard, NewPlayer, NewBoard):-
   ite(Player = 1, NewPlayer is 2, NewPlayer is 1).
 
 mandatoryCapture(CurrBoard, NewBoard, Player):-
-	setof(Num-Moves,getCapturesList(CurrBoard, X-Y, Player, Moves, Num), L),
-  nl, nl, write(L), nl,
-	reverse(L, LInverted),
+	findall(Num-Moves,getCapturesList(CurrBoard, X-Y, Player, Moves, Num), L),
+  sort(L, LSorted),
+	reverse(LSorted, LInverted),
+  nl, nl, write(LInverted), nl,
   nth1(1, LInverted, NCaptures-BestMove),
-  write(NCaptures),nl,
+  write('NCaptures: '), write(NCaptures),nl,
   getBestCaptures(LInverted, Best, [], NCaptures),
 	ite(NCaptures = 0,
 		selectPiece(CurrBoard, NewBoard, Player),
