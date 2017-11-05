@@ -1,36 +1,37 @@
-:- dynamic MaxSteps/1.
-:- dynamic CapturesList/1.
+:- dynamic maxSteps/1,
+           capturesList/1.
 
 canManCapture(CurrBoard, Player, X-Y, Direction, NewX-NewY) :-
+  findPiece(CurrBoard, X-Y, Player),
   (Player = 1) -> (
-   (Direction = left) -> (X1 is X - 1, findPiece(CurrBoard, X1-Y, 2),
+   (Direction = left) -> X1 is X - 1, findPiece(CurrBoard, X1-Y, 2),
       X2 is X - 2, findPiece(CurrBoard, X2-Y, 0),
       NewX is X2, NewY is Y;
-   (Direction = right) -> (X1 is X + 1, findPiece(CurrBoard, X1-Y, 2),
+   (Direction = right) -> X1 is X + 1, findPiece(CurrBoard, X1-Y, 2),
       X2 is X + 2, findPiece(CurrBoard, X2-Y, 0),
       NewX is X2, NewY is Y;
-   (Direction = front) -> (Y1 is Y + 1, findPiece(CurrBoard, X-Y1, 2),
+   (Direction = front) -> Y1 is Y + 1, findPiece(CurrBoard, X-Y1, 2),
       Y2 is Y + 2, findPiece(CurrBoard, X-Y2, 0),
-      NewX is X, NewY is Y2;
+      NewX is X, NewY is Y2
   );
   (Player = 2) -> (
-    (Direction = left) -> (X1 is X - 1, findPiece(CurrBoard, X1-Y, 1),
+    (Direction = left) -> X1 is X - 1, findPiece(CurrBoard, X1-Y, 1),
        X2 is X - 2, findPiece(CurrBoard, X2-Y, 0),
        NewX is X2, NewY is Y;
-    (Direction = right) -> (X1 is X + 1, findPiece(CurrBoard, X1-Y, 1),
+    (Direction = right) -> X1 is X + 1, findPiece(CurrBoard, X1-Y, 1),
        X2 is X + 2, findPiece(CurrBoard, X2-Y, 0),
        NewX is X2, NewY is Y;
-    (Direction = front) -> (Y1 is Y - 1, findPiece(CurrBoard, X-Y1, 1),
+    (Direction = front) -> Y1 is Y - 1, findPiece(CurrBoard, X-Y1, 1),
        Y2 is Y + 2, findPiece(CurrBoard, X-Y2, 0),
-       NewX is X, NewY is Y2;
+       NewX is X, NewY is Y2
   ).
 
 
 getCapturesList(CurrBoard, X-Y, Player, Paths, NCaptures) :-
-  assert(MaxSteps(0)),
-  assert(CapturesList([])),
+  assert(maxSteps(0)),
+  assert(capturesList([])),
   findCapturesPaths(CurrBoard, X-Y, Player, [X-Y], 0),
-  retract(CapturesList(Paths)), retract(MaxSteps(NCaptures)).
+  retract(capturesList(Paths)), retract(maxSteps(NCaptures)).
 
 findCapturesPaths(CurrBoard, X-Y, Player, Path, N) :-
   ite(canManCapture(CurrBoard, Player, X-Y, left, NewX-NewY),
@@ -51,5 +52,5 @@ findCapturesPaths(CurrBoard, X-Y, Player, Path, N) :-
     append(Path, [NewX3-NewY3], NextStep3),
     findCapturesPaths(NewBoard3, NewX3-NewY3, Player, NextStep3, N3)),
     true),
-  ite((MaxSteps(Max), N = Max), (retract(CapturesList(L)), append(L, [Path], PathToSave), assert(CapturesList(PathToSave))), true),
-  ite((MaxSteps(Max), N > Max), (retract(CapturesList(_)), assert(CapturesList(Path)), retract(MaxSteps(_)), assert(MaxSteps(N))), true).
+  ite((maxSteps(Max), N = Max), (retract(capturesList(L)), append(L, [Path], PathToSave), assert(capturesList(PathToSave))), true),
+  ite((maxSteps(Max), N > Max), (retract(capturesList(_)), assert(capturesList(Path)), retract(maxSteps(_)), assert(maxSteps(N))), true).

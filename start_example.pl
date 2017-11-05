@@ -16,6 +16,7 @@
 :-include('logic/player_man_move.pl').
 :-include('logic/player_move.pl').
 :-include('logic/verifications.pl').
+:-include('logic/player_man_capture.pl').
 
 :-include('utils/init.pl').
 :-include('utils/map_positions.pl').

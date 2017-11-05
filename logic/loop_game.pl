@@ -26,13 +26,16 @@ playGame(Player, CurrBoard, NewPlayer, NewBoard):-
   ite(Player = 1, NewPlayer is 2, NewPlayer is 1).
 
 mandatoryCapture(CurrBoard, NewBoard, Player):-
-	setof(Num-X-Y-Move,captureNumber(CurrBoard,X-Y,Num,Player,Move),_L),
-	reverse(_L,[Num-X-Y-Move|Rest]),
-	ite(Num = 0,
+	setof(Num-Moves,getCapturesList(CurrBoard, X-Y, Player, Moves, Num), L),
+  nl, nl, write(L), nl,
+	reverse(L, LInverted),
+  nth1(1, LInverted, NCaptures-BestMove),
+  write(NCaptures),nl,
+  getBestCaptures(LInverted, Best, [], NCaptures),
+	ite(NCaptures = 0,
 		selectPiece(CurrBoard, NewBoard, Player),
-		(getPossivelCaptures([Num-X-Y-Move|Rest], Moves, Num),
-		selectCapturePiece(CurrBoard, Player, Moves, Num, NewBoard)
-		)).
+		selectCapturePiece(CurrBoard, Player, Best, NCaptures, NewBoard)
+		).
 
 gamePCvsPC(InitialBoard):-
 	retractall(keep(_A,_B)),
@@ -68,4 +71,3 @@ playGamePCorPlayer(Player, Board, NewPlayer, NewBoard):-
 	ite(Player = 1,
 		playGame(Player, Board, NewPlayer, NewBoard),
 		playGamePC(Player, Board, NewPlayer, NewBoard)).
-
