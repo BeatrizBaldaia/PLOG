@@ -74,7 +74,6 @@ selectCapturePiece(CurrBoard, Player, Moves, MaxCaptureNum, NewBoard) :-
   write('Row (Number)'), read(Y),
   write('Column (Letter)'), read(L), convertLetterToNum(L, X),
   findPiece(CurrBoard, X-Y, Player),
-  isCapturePiece(X-Y, Moves),
   removeCaptures(X-Y, 1, Moves, UpdatedMoves),
   \+length(UpdatedMoves, 0), !,
   nl, write('>>>>>>>>>>>>>>>>>>>>>MOVE PIECE<<<<<<<<<<<<<<<<<<<<<'), nl, nl, nl,
