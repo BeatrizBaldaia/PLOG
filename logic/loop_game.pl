@@ -29,13 +29,13 @@ mandatoryCapture(CurrBoard, NewBoard, Player):-
 	findall(Num-Moves,getCapturesList(CurrBoard, X-Y, Player, Moves, Num), L),
   sort(L, LSorted),
 	reverse(LSorted, LInverted),
-  nl, nl, write(LInverted), nl,
   nth1(1, LInverted, NCaptures-BestMove),
-  write('NCaptures: '), write(NCaptures),nl,
   getBestCaptures(LInverted, Best, [], NCaptures),
-	ite(NCaptures = 0,
+  write('Best:  '), write(Best), nl, nl, nl,
+  ite(NCaptures = 0,
 		selectPiece(CurrBoard, NewBoard, Player),
-		selectCapturePiece(CurrBoard, Player, Best, NCaptures, NewBoard)
+		(nl, nl, write('WARNING: You\'re forced to capture'), nl, nl,
+    selectCapturePiece(CurrBoard, Player, Best, NCaptures, NewBoard))
 		).
 
 gamePCvsPC(InitialBoard):-

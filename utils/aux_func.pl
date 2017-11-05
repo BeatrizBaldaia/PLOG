@@ -14,8 +14,8 @@ abs(X,X) :- X >= 0, !.
 abs(X,Y) :- Y is -X.
 
 getBestCaptures([], Aux, Aux, NCaptures).
-getBestCaptures([H | T], Best, Aux, NCaptures) :-
-	nth1(1, H, NCaptures) -> (
-		nth1(4, H, Move), append(Aux, Move, Aux2), getBestCaptures(T, Best, Aux2, NCaptures)
+getBestCaptures([N-L | T], Best, Aux, NCaptures) :-
+	N = NCaptures -> (
+		append(Aux, [L], Aux2), getBestCaptures(T, Best, Aux2, NCaptures)
 	);
 	Best = Aux.

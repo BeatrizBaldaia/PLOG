@@ -80,16 +80,25 @@ selectCapturePiece(CurrBoard, Player, Moves, MaxCaptureNum, NewBoard) :-
   moveCapturePiece(CurrBoard, X-Y, Player, UpdatedMoves, MaxCaptureNum, 2, NewBoard).
 
 
-moveCapturePiece(CurrBoard, X-Y, Player, Moves, MaxCaptureNum, MaxCaptureNum, NewBoard) :-
-  write('No more pieces to capture'), nl,
-  NewBoard = CurrBoard.
-
 moveCapturePiece(CurrBoard,  X-Y, Player, Moves, MaxCaptureNum, CurrNum, NewBoard) :-
-  showBoard(CurrBoard),
-  write('Row (Number)'), read(Y1),
-  write('Column (Letter)'), read(L), convertLetterToNum(L, X1),
-  findPiece(CurrBoard, X1-Y1, 0),
-  removeCaptures(X1-Y1, 1, Moves, UpdatedMoves),
-  ite(length(UpdatedMoves, 0),
-    moveCapturePiece(CurrBoard,  X-Y, Player, Moves, MaxCaptureNum, CurrNum, NewBoard),
-    (updateBoardCaptureMove(CurrBoard, UpdatedBoard, X-Y, X1-Y1, Player), NewNum is CurrNum + 1, moveCapturePiece(UpdatedBoard, X1-Y1, Player, MaxCaptureNum, NewNum, NewBoard))).
+  write('CurrNum: '), write(CurrNum), nl,
+  ite(CurrNum > (MaxCaptureNum + 1),
+    (
+    write('No more pieces to capture'), nl,
+    NewBoard = CurrBoard
+    ),
+    (
+    showBoard(CurrBoard),
+    write('Row (Number)'), read(Y1),
+    write('Column (Letter)'), read(L), convertLetterToNum(L, X1),
+    findPiece(CurrBoard, X1-Y1, 0),
+    removeCaptures(X1-Y1, CurrNum, Moves, UpdatedMoves),
+    ite(length(UpdatedMoves, 0),
+      moveCapturePiece(CurrBoard,  X-Y, Player, Moves, MaxCaptureNum, CurrNum, NewBoard),
+      (
+      updateBoardCaptureMove(CurrBoard, UpdatedBoard, X-Y, X1-Y1, Player),
+      NewNum is CurrNum + 1,
+      moveCapturePiece(UpdatedBoard, X1-Y1, Player, Moves, MaxCaptureNum, NewNum, NewBoard))
+      )
+     )
+  ).
