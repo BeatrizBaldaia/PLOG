@@ -9,51 +9,53 @@ canManCapture(CurrBoard, Player, X-Y, Direction, NewX-NewY) :-
         (
           X1 is X - 1, findPiece(CurrBoard, X1-Y, 2),
           X2 is X - 2, findPiece(CurrBoard, X2-Y, 0),
-          NewX is X2, NewY is Y,
+          NewX is X2, NewY is Y
         ),
-        ite(Direction = right,
-          (
-           X1 is X + 1, findPiece(CurrBoard, X1-Y, 2),
-           X2 is X + 2, findPiece(CurrBoard, X2-Y, 0),
-           NewX is X2, NewY is Y,
-          ),
-          ite(Direction = front,
-            (
-             Y1 is Y + 1, findPiece(CurrBoard, X-Y1, 2),
-             Y2 is Y + 2, findPiece(CurrBoard, X-Y2, 0),
-             NewX is X, NewY is Y2,
-            ),
-            fail
-          )
-        )
-      )
-    ),
-    (
-      findPiece(CurrBoard, X-Y, Player),
-      ite(Direction = left,
         (
-          X1 is X - 1, findPiece(CurrBoard, X1-Y, 1),
-          X2 is X - 2, findPiece(CurrBoard, X2-Y, 0),
-          NewX is X2, NewY is Y,
-        ),
-        ite(Direction = right,
-          (
-           X1 is X + 1, findPiece(CurrBoard, X1-Y, 1),
-           X2 is X + 2, findPiece(CurrBoard, X2-Y, 0),
-           NewX is X2, NewY is Y,
-          ),
-          ite(Direction = front,
+          ite(Direction = right,
             (
-             Y1 is Y - 1, findPiece(CurrBoard, X-Y1, 1),
-             Y2 is Y - 2, findPiece(CurrBoard, X-Y2, 0),
-             NewX is X, NewY is Y2,
+              X1 is X + 1, findPiece(CurrBoard, X1-Y, 2),
+              X2 is X + 2, findPiece(CurrBoard, X2-Y, 0),
+              NewX is X2, NewY is Y
             ),
-            fail
-          )
-        )
-      )
-    )
-  ).
+            (
+              ite(Direction = front,
+                (
+                 Y1 is Y + 1, findPiece(CurrBoard, X-Y1, 2),
+                 Y2 is Y + 2, findPiece(CurrBoard, X-Y2, 0),
+                 NewX is X, NewY is Y2
+                ),
+                fail)
+            ))
+        ))
+    ),
+   (
+     findPiece(CurrBoard, X-Y, Player),
+     ite(Direction = left,
+       (
+        X1 is X - 1, findPiece(CurrBoard, X1-Y, 1),
+        X2 is X - 2, findPiece(CurrBoard, X2-Y, 0),
+        NewX is X2, NewY is Y
+       ),
+       (
+        ite(Direction = right,
+           (
+            X1 is X + 1, findPiece(CurrBoard, X1-Y, 1),
+            X2 is X + 2, findPiece(CurrBoard, X2-Y, 0),
+            NewX is X2, NewY is Y
+           ),
+           (
+            ite(Direction = front,
+             (
+              Y1 is Y - 1, findPiece(CurrBoard, X-Y1, 1),
+              Y2 is Y - 2, findPiece(CurrBoard, X-Y2, 0),
+              NewX is X, NewY is Y2
+             ),
+              fail)
+           ))
+        ))
+     )
+    ).
 
 
 getCapturesList(CurrBoard, X-Y, Player, Paths, NCaptures) :-
