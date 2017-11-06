@@ -4,7 +4,7 @@ e o sentido do movimento da mesma
 */
 selectPiece(CurrBoard, NewBoard, PlayerNum):-
   showBoard(CurrBoard),
-repeat,
+  repeat,
   write('Choose your piece.'), nl,
   write('Row (Number)'), read(Y),
   write('Column (Letter)'), read(L),convertLetterToNum(L, X),
@@ -23,21 +23,19 @@ defineDirection(CurrBoard, NewBoard, X-Y, Player):-
   write('Row (Number)'), read(Y1),
   write('Column (Letter)'), read(L),
   once(convertLetterToNum(L, X1)),
-  write('antes do convert dir'),  nl,
-  convertToDirection(X-Y, X1-Y1, D),
-  write('depois do convert dir'), nl,
+  convertToDirection(CurrBoard, Player, X-Y, X1-Y1, D),
 
-ite(
-	Player = 1,
-	validMan1Move(CurrBoard, X-Y, NewX-NewY, D),
-	validMan2Move(CurrBoard, X-Y, NewX-NewY, D)),
-  updateBoardSimpleMove(CurrBoard, NewBoard, X-Y, NewX-NewY, Player),
-  showBoard(NewBoard).
+  ite(
+  	Player = 1,
+  	validMan1Move(CurrBoard, X-Y, NewX-NewY, D),
+  	validMan2Move(CurrBoard, X-Y, NewX-NewY, D)),
+    updateBoardSimpleMove(CurrBoard, NewBoard, X-Y, NewX-NewY, Player),
+    showBoard(NewBoard).
 
 defineDirection(CurrBoard, FinalBoard, X-Y, Player):-
   member(Player, [11, 22]), !,
   repeat,
-  write('Move the piece.'), nl,
+  write('Move the piece.'), nl, nl,
   read(D),
   member(D, [1, 2, 3, 4, 6, 7, 8, 9]),
   keepMovingKing(CurrBoard, FinalBoard, X-Y, Player, D).

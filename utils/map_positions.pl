@@ -28,30 +28,114 @@ findPiece(Board, X-Y, Piece):-
 /*
 Predicado para obter a direcao de um movimento simples
 */
-convertToDirection(X-Y, X1-Y1, D):-
-  Xaux1 is X - X1,
-  abs(Xaux1, Xaux),
-  Xaux @=< 1,
-  Yaux1 is Y - Y1,
-  abs(Yaux1, Yaux),
-  Yaux @=< 1,
-  (Xaux =< 1, Yaux =< 1) -> (
-  ite((X = X1, Y = Y1), D is 0, true),
+convertToDirection(CurrBoard, Player, X-Y, X1-Y1, D):-
+  ite((X = X1, Y = Y1), fail, true),
+  ite(Y = Y1,
+      ite(X > X1, isDirection4(CurrBoard, X-Y, X1-Y1, Player, D), isDirection6(CurrBoard, X-Y, X1-Y1, Player, D)),
+      ite(X = X1,
+        ite(Y > Y1, isDirection8(CurrBoard, X-Y, X1-Y1, Player, D), isDirection2(CurrBoard, X-Y, X1-Y1, Player, D)),
+        ite(X1 > X,
+          ite(Y1 > Y, isDirection3(CurrBoard, X-Y, X1-Y1, Player, D), isDirection9(CurrBoard, X-Y, X1-Y1, Player, D)),
+          ite(Y1 > Y, isDirection1(CurrBoard, X-Y, X1-Y1, Player, D), isDirection7(CurrBoard, X-Y, X1-Y1, Player, D))
+        )
+      )
+  ).
 
-  Y = Y1 -> (%movimento horizontal
-    X > X1 -> D is 4;
-    X < X1 -> D is 6
-  );
-  X = X1 -> (%movimento vertical
-    Y > Y1 -> D is 8;
-    Y < Y1 -> D is 2
-  );
-  (X1 > X, Y1 > Y) -> D is 3;
-  (X1 > X, Y1 < Y) -> D is 9;
-  (X1 < X, Y1 > Y) -> D is 1;
-  (X1 < X, Y1 < Y) -> D is 7).
+isDirection8(CurrBoard, X-Y, X1-Y1, Player, D):-
+  abs((Y - Y1), Yaux),
+  ite(Yaux =< 1,
+    D is 8,
+    (
+      Y2 is Y - 1,
+      findPiece(CurrBoard, X-Y2, Player),
+      isDirection8(CurrBoard, X-Y2, X1-Y1, Player, D)
+    )
+  ).
 
+isDirection2(CurrBoard, X-Y, X1-Y1, Player, D):-
+  abs((Y - Y1), Yaux),
+  ite(Yaux =< 1,
+    D is 2,
+    (
+      Y2 is Y + 1,
+      findPiece(CurrBoard, X-Y2, Player),
+      isDirection2(CurrBoard, X-Y2, X1-Y1, Player, D)
+    )
+  ).
 
+isDirection4(CurrBoard, X-Y, X1-Y1, Player, D):-
+  abs((X - X1), Xaux),
+  ite(Xaux =< 1,
+    D is 4,
+    (
+      X2 is X - 1,
+      findPiece(CurrBoard, X2-Y, Player),
+      isDirection4(CurrBoard, X2-Y, X1-Y1, Player, D)
+    )
+  ).
+
+isDirection6(CurrBoard, X-Y, X1-Y1, Player, D):-
+  abs((X - X1), Xaux),
+  ite(Xaux =< 1,
+    D is 6,
+    (
+      X2 is X + 1,
+      findPiece(CurrBoard, X2-Y, Player),
+      isDirection6(CurrBoard, X2-Y, X1-Y1, Player, D)
+    )
+  ).
+
+isDirection7(CurrBoard, X-Y, X1-Y1, Player, D):-
+  abs((X - X1), Xaux),
+  abs((Y - Y1), Yaux),
+  ite((Xaux =< 1, Yaux =< 1, Xaux = Yaux),
+    D is 7,
+    (
+      X2 is X - 1,
+      Y2 is Y - 1,
+      findPiece(CurrBoard, X2-Y2, Player),
+      isDirection7(CurrBoard, X2-Y2, X1-Y1, Player, D)
+    )
+  ).
+
+isDirection9(CurrBoard, X-Y, X1-Y1, Player, D):-
+  abs((X - X1), Xaux),
+  abs((Y - Y1), Yaux),
+  ite((Xaux =< 1, Yaux =< 1, Xaux = Yaux),
+    D is 9,
+    (
+      X2 is X + 1,
+      Y2 is Y - 1,
+      findPiece(CurrBoard, X2-Y2, Player),
+      isDirection9(CurrBoard, X2-Y2, X1-Y1, Player, D)
+    )
+  ).
+
+isDirection1(CurrBoard, X-Y, X1-Y1, Player, D):-
+  abs((X - X1), Xaux),
+  abs((Y - Y1), Yaux),
+  ite((Xaux =< 1, Yaux =< 1, Xaux = Yaux),
+    D is 1,
+    (
+      X2 is X - 1,
+      Y2 is Y + 1,
+      findPiece(CurrBoard, X2-Y2, Player),
+      isDirection1(CurrBoard, X2-Y2, X1-Y1, Player, D)
+    )
+  ).
+
+isDirection3(CurrBoard, X-Y, X1-Y1, Player, D):-
+  abs((X - X1), Xaux),
+  abs((Y - Y1), Yaux),
+  ite((Xaux =< 1, Yaux =< 1, Xaux = Yaux),
+    D is 3,
+    (
+      X2 is X + 1,
+      Y2 is Y + 1,
+      findPiece(CurrBoard, X2-Y2, Player),
+      isDirection3(CurrBoard, X2-Y2, X1-Y1, Player, D)
+    )
+  ).
 /*
 Predicados para colocar/mover peças no Tabuleiro
  */
