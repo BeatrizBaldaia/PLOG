@@ -54,7 +54,7 @@ playGamePC(Player, Board, NewPlayer, NewBoard):-
   ite(Player = 1,(displayPlayer1Turn, NewPlayer = 2),(displayPlayer2Turn, NewPlayer = 1)),
   showBoard(Board),
   validMovesPC(Board, Player, Moves, Simple),
-  chooseMovePC(Moves, Move),
+  chooseMovePC(Moves, Move, 1, Board, Player, Simple),
   applyMovePC(Board, NewBoard, Move, Player, Simple).
 
 
