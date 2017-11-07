@@ -29,19 +29,21 @@ findPiece(Board, X-Y, Piece):-
 Predicado para obter a direcao de um movimento simples
 */
 convertToDirection(CurrBoard, Player, X-Y, X1-Y1, D):-
+  write('no convertToDirection'), nl, write('X-Y: '), write(X-Y), nl, write('X1-Y1: '), write(X1-Y1), nl, write('D: '), write(D), nl,
   ite((X = X1, Y = Y1), fail, true),
   ite(Y = Y1,
-      ite(X > X1, isDirection4(CurrBoard, X-Y, X1-Y1, Player, D), isDirection6(CurrBoard, X-Y, X1-Y1, Player, D)),
+      (write('movimento horizontal'), nl, ite(X > X1, isDirection4(CurrBoard, X-Y, X1-Y1, Player, D), isDirection6(CurrBoard, X-Y, X1-Y1, Player, D))),
       ite(X = X1,
-        ite(Y > Y1, isDirection8(CurrBoard, X-Y, X1-Y1, Player, D), isDirection2(CurrBoard, X-Y, X1-Y1, Player, D)),
+        (write('movimento vertical'), nl, ite(Y > Y1, isDirection8(CurrBoard, X-Y, X1-Y1, Player, D), isDirection2(CurrBoard, X-Y, X1-Y1, Player, D))),
         ite(X1 > X,
-          ite(Y1 > Y, isDirection3(CurrBoard, X-Y, X1-Y1, Player, D), isDirection9(CurrBoard, X-Y, X1-Y1, Player, D)),
-          ite(Y1 > Y, isDirection1(CurrBoard, X-Y, X1-Y1, Player, D), isDirection7(CurrBoard, X-Y, X1-Y1, Player, D))
+          (write('movimento diagonal'), nl, ite(Y1 > Y, isDirection3(CurrBoard, X-Y, X1-Y1, Player, D), isDirection9(CurrBoard, X-Y, X1-Y1, Player, D))),
+          (write('movimento diagonal'), nl, ite(Y1 > Y, isDirection1(CurrBoard, X-Y, X1-Y1, Player, D), isDirection7(CurrBoard, X-Y, X1-Y1, Player, D)))
         )
       )
   ).
 
 isDirection8(CurrBoard, X-Y, X1-Y1, Player, D):-
+  write('no isDirection8'), nl,
   abs((Y - Y1), Yaux),
   ite(Yaux =< 1,
     D is 8,
@@ -53,6 +55,7 @@ isDirection8(CurrBoard, X-Y, X1-Y1, Player, D):-
   ).
 
 isDirection2(CurrBoard, X-Y, X1-Y1, Player, D):-
+  write('no isDirection2'), nl,
   abs((Y - Y1), Yaux),
   ite(Yaux =< 1,
     D is 2,
@@ -64,6 +67,7 @@ isDirection2(CurrBoard, X-Y, X1-Y1, Player, D):-
   ).
 
 isDirection4(CurrBoard, X-Y, X1-Y1, Player, D):-
+  write('no isDirection4'), nl,
   abs((X - X1), Xaux),
   ite(Xaux =< 1,
     D is 4,
@@ -75,6 +79,7 @@ isDirection4(CurrBoard, X-Y, X1-Y1, Player, D):-
   ).
 
 isDirection6(CurrBoard, X-Y, X1-Y1, Player, D):-
+  write('no isDirection6'), nl,
   abs((X - X1), Xaux),
   ite(Xaux =< 1,
     D is 6,
@@ -86,6 +91,7 @@ isDirection6(CurrBoard, X-Y, X1-Y1, Player, D):-
   ).
 
 isDirection7(CurrBoard, X-Y, X1-Y1, Player, D):-
+  write('no isDirection7'), nl,
   abs((X - X1), Xaux),
   abs((Y - Y1), Yaux),
   ite((Xaux =< 1, Yaux =< 1, Xaux = Yaux),
@@ -99,6 +105,7 @@ isDirection7(CurrBoard, X-Y, X1-Y1, Player, D):-
   ).
 
 isDirection9(CurrBoard, X-Y, X1-Y1, Player, D):-
+  write('no isDirection9'), nl,
   abs((X - X1), Xaux),
   abs((Y - Y1), Yaux),
   ite((Xaux =< 1, Yaux =< 1, Xaux = Yaux),
@@ -112,6 +119,7 @@ isDirection9(CurrBoard, X-Y, X1-Y1, Player, D):-
   ).
 
 isDirection1(CurrBoard, X-Y, X1-Y1, Player, D):-
+  write('no isDirection1'), nl,
   abs((X - X1), Xaux),
   abs((Y - Y1), Yaux),
   ite((Xaux =< 1, Yaux =< 1, Xaux = Yaux),
@@ -125,6 +133,7 @@ isDirection1(CurrBoard, X-Y, X1-Y1, Player, D):-
   ).
 
 isDirection3(CurrBoard, X-Y, X1-Y1, Player, D):-
+  write('no isDirection3'), nl,
   abs((X - X1), Xaux),
   abs((Y - Y1), Yaux),
   ite((Xaux =< 1, Yaux =< 1, Xaux = Yaux),
@@ -176,14 +185,14 @@ convertLetterToNum('g', 7).
 convertLetterToNum('h', 8).
 */
 convertLetterToNum(L, N):-
-  (L = 'A') -> N is 1;
-  (L = 'B') -> N is 2;
-  (L = 'C') -> N is 3;
-  (L = 'D') -> N is 4;
-  (L = 'E') -> N is 5;
-  (L = 'F') -> N is 6;
-  (L = 'G') -> N is 7;
-  (L = 'H') -> N is 8.
+  (L = 'A') -> N is 1, write('converteu A'), nl;
+  (L = 'B') -> N is 2, write('converteu B'), nl;
+  (L = 'C') -> N is 3, write('converteu C'), nl;
+  (L = 'D') -> N is 4, write('converteu D'), nl;
+  (L = 'E') -> N is 5, write('converteu E'), nl;
+  (L = 'F') -> N is 6, write('converteu F'), nl;
+  (L = 'G') -> N is 7, write('converteu G'), nl;
+  (L = 'H') -> N is 8, write('converteu H'), nl.
 
 /*
 Predicado que atualiza o tabuleiro

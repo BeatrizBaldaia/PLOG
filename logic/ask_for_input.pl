@@ -7,7 +7,8 @@ selectPiece(CurrBoard, NewBoard, PlayerNum):-
   repeat,
   write('Choose your piece.'), nl,
   write('Row (Number)'), read(Y),
-  write('Column (Letter)'), read(L),convertLetterToNum(L, X),
+  write('Column (Letter)'), read(L), write('L = '), write(L), nl,convertLetterToNum(L, X),
+  write('depois do convertLetterToNum'), nl,
   findPiece(CurrBoard, X-Y, Player),
   ite(
 	PlayerNum = 1,
@@ -22,8 +23,11 @@ defineDirection(CurrBoard, NewBoard, X-Y, Player):-
   write('Move the piece.'), nl,
   write('Row (Number)'), read(Y1),
   write('Column (Letter)'), read(L),
-  once(convertLetterToNum(L, X1)),
+  write('L = '), write(L), nl,
+  convertLetterToNum(L, X1),
+  write('Convertida para numero'), nl, write(X1), nl, nl,
   convertToDirection(CurrBoard, Player, X-Y, X1-Y1, D),
+  write('Direction = '), write(D), nl,nl,
 
   ite(
   	Player = 1,

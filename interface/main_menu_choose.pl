@@ -18,4 +18,3 @@ startPlay(3):-
 startPlay(2):-
   create_board(Board),
   game1vsPC(Board).
-
