@@ -9,13 +9,7 @@ chooseMovePC(Moves, Move, Level, Board, Player, Simple):-
 
 chooseMovePC(Moves, Move, Board, Player, Simple):-
 	parserMovePC(Moves,	Board, Player, Simple, Answer),
-<<<<<<< HEAD
-	%ordemar Answer
-=======
-	write(Answer),
 	sort(Answer, _L),
-	write(_L),
->>>>>>> ffbc55e28dfe44d9254342bd64752f0845519ab9
 	reverse(_L,[Num-Move|_Rest]).
 
 parserMovePC([], Board, Player, Simple, []).

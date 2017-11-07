@@ -3,7 +3,7 @@ chooseGameMode:-
   selectOption.
 
 selectOption:-
-  read(Option),
+  getInteger(Option),
   Option > 0,
   Option < 5,
   startPlay(Option).
@@ -16,8 +16,6 @@ startPlay(1):-
 startPlay(2):-
   create_board(Board),
   game1vsPC(Board).
-<<<<<<< HEAD
-=======
 
 startPlay(3):-
   create_board(Board),
@@ -33,4 +31,3 @@ startPlay(4):-
 	write('Playing in random level!'),
 	write('Playing in difficult level!')),
   chooseGameMode.
->>>>>>> ffbc55e28dfe44d9254342bd64752f0845519ab9
