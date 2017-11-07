@@ -66,7 +66,7 @@ getLetter(R):-
 		isLetter(A, R),!.
 isLetter(97, 'A').
 isLetter(98, 'B').
-isLetter(98, 'C').
+isLetter(99, 'C').
 isLetter(100, 'D').
 isLetter(101, 'E').
 isLetter(102, 'F').
