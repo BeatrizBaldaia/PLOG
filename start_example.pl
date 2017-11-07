@@ -22,4 +22,4 @@
 :-include('utils/map_positions.pl').
 :-include('utils/aux_func.pl').
 
-startExample :- chooseGameMode.
+startExample :- assert(level(1)),chooseGameMode.

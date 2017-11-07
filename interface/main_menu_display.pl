@@ -23,7 +23,7 @@ displayMainMenu :-
   write('||            =>  (_1_)   1 Vs 1                             ||'), nl,
   write('||            =>  (_2_)   1 Vs Computer                      ||'), nl,
   write('||            =>  (_3_)   Computer 1 Vs Computer             ||'), nl,
-  write('||                                                           ||'), nl,
+  write('||            =>  (_4_)   Change Level                       ||'), nl,
   write('||                                                           ||'), nl,
   write('\\\\===========================================================//'), nl,
   nl,nl,nl.
