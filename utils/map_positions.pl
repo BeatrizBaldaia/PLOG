@@ -44,7 +44,8 @@ convertToDirection(CurrBoard, Player, X-Y, X1-Y1, D):-
 
 isDirection8(CurrBoard, X-Y, X1-Y1, Player, D):-
   write('no isDirection8'), nl,
-  abs((Y - Y1), Yaux),
+  Yaux1 is (Y - Y1),
+  abs(Yaux1, Yaux),
   ite(Yaux =< 1,
     D is 8,
     (
@@ -56,7 +57,8 @@ isDirection8(CurrBoard, X-Y, X1-Y1, Player, D):-
 
 isDirection2(CurrBoard, X-Y, X1-Y1, Player, D):-
   write('no isDirection2'), nl,
-  abs((Y - Y1), Yaux),
+  Yaux1 is (Y - Y1),
+  abs(Yaux1, Yaux),
   ite(Yaux =< 1,
     D is 2,
     (
@@ -68,7 +70,8 @@ isDirection2(CurrBoard, X-Y, X1-Y1, Player, D):-
 
 isDirection4(CurrBoard, X-Y, X1-Y1, Player, D):-
   write('no isDirection4'), nl,
-  abs((X - X1), Xaux),
+  Xaux1 is (X - X1),
+  abs(Xaux1, Xaux),
   ite(Xaux =< 1,
     D is 4,
     (
@@ -80,7 +83,8 @@ isDirection4(CurrBoard, X-Y, X1-Y1, Player, D):-
 
 isDirection6(CurrBoard, X-Y, X1-Y1, Player, D):-
   write('no isDirection6'), nl,
-  abs((X - X1), Xaux),
+  Xaux1 is (X - X1),
+  abs(Xaux1, Xaux),
   ite(Xaux =< 1,
     D is 6,
     (
@@ -92,8 +96,10 @@ isDirection6(CurrBoard, X-Y, X1-Y1, Player, D):-
 
 isDirection7(CurrBoard, X-Y, X1-Y1, Player, D):-
   write('no isDirection7'), nl,
-  abs((X - X1), Xaux),
-  abs((Y - Y1), Yaux),
+  Xaux1 is (X - X1),
+  Yaux1 is (Y - Y1),
+  abs(Xaux1, Xaux),
+  abs(Yaux1, Yaux),
   ite((Xaux =< 1, Yaux =< 1, Xaux = Yaux),
     D is 7,
     (
@@ -106,8 +112,10 @@ isDirection7(CurrBoard, X-Y, X1-Y1, Player, D):-
 
 isDirection9(CurrBoard, X-Y, X1-Y1, Player, D):-
   write('no isDirection9'), nl,
-  abs((X - X1), Xaux),
-  abs((Y - Y1), Yaux),
+  Xaux1 is (X - X1),
+  Yaux1 is (Y - Y1),
+  abs(Xaux1, Xaux),
+  abs(Yaux1, Yaux),
   ite((Xaux =< 1, Yaux =< 1, Xaux = Yaux),
     D is 9,
     (
@@ -120,8 +128,10 @@ isDirection9(CurrBoard, X-Y, X1-Y1, Player, D):-
 
 isDirection1(CurrBoard, X-Y, X1-Y1, Player, D):-
   write('no isDirection1'), nl,
-  abs((X - X1), Xaux),
-  abs((Y - Y1), Yaux),
+  Xaux1 is (X - X1),
+  Yaux1 is (Y - Y1),
+  abs(Xaux1, Xaux),
+  abs(Yaux1, Yaux),
   ite((Xaux =< 1, Yaux =< 1, Xaux = Yaux),
     D is 1,
     (
@@ -134,8 +144,10 @@ isDirection1(CurrBoard, X-Y, X1-Y1, Player, D):-
 
 isDirection3(CurrBoard, X-Y, X1-Y1, Player, D):-
   write('no isDirection3'), nl,
-  abs((X - X1), Xaux),
-  abs((Y - Y1), Yaux),
+  Xaux1 is (X - X1),
+  Yaux1 is (Y - Y1),
+  abs(Xaux1, Xaux),
+  abs(Yaux1, Yaux),
   ite((Xaux =< 1, Yaux =< 1, Xaux = Yaux),
     D is 3,
     (

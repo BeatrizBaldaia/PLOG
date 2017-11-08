@@ -40,7 +40,7 @@ defineDirection(CurrBoard, FinalBoard, X-Y, Player):-
   member(Player, [11, 22]), !,
   repeat,
   write('Move the piece.'), nl, nl,
-  read(D),
+  getInteger(D),
   member(D, [1, 2, 3, 4, 6, 7, 8, 9]),
   keepMovingKing(CurrBoard, FinalBoard, X-Y, Player, D).
 
@@ -59,7 +59,7 @@ O rei pode andar mais do que uma
 casa na mesma linha de percurso
 */
 keepMoving(Direction):-
-  read(D),
+  getInteger(D),
   ite(D = Direction,
     true,
     ite(member(D, [1, 2, 3, 4, 6, 7, 8, 9]), keepMoving(Direction), fail)).
@@ -74,8 +74,8 @@ selectCapturePiece(CurrBoard, Player, Moves, MaxCaptureNum, NewBoard) :-
   ite(Player = 1, King is 11, King is 22),
   repeat,
   nl, write('Choose your piece.'), nl,
-  write('Row (Number)'), read(Y),
-  write('Column (Letter)'), read(L), convertLetterToNum(L, X),
+  write('Row (Number)'), getInteger(Y),
+  write('Column (Letter)'), getLetter(L), convertLetterToNum(L, X),
   findPiece(CurrBoard, X-Y, P),
   member(P, [Player, King]),
   removeCaptures(X-Y, 1, Moves, UpdatedMoves),
