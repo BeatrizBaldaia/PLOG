@@ -1,22 +1,29 @@
-chooseMovePC(Moves, Move):-
+chooseMovePCLevel1(Moves, Move):-
 	random_member(Move, Moves).%Nivel 1
 
 
 chooseMovePC(Moves, Move, Level, Board, Player, Simple):-
   ite(Level = 1,
-		chooseMovePC(Moves, Move),
-		chooseMovePC(Moves, Move, Board, Player, Simple)).
+		chooseMovePCLevel1(Moves, Move),
+		chooseMovePCLevel2(Moves, Move, Board, Player, Simple)).
 
-chooseMovePC(Moves, Move, Board, Player, Simple):-
+chooseMovePCLevel2(Moves, Move, Board, Player, Simple):-
 	parserMovePC(Moves,	Board, Player, Simple, Answer),
-<<<<<<< HEAD
-	%ordemar Answer
-=======
-	write(Answer),
 	sort(Answer, _L),
-	write(_L),
->>>>>>> ffbc55e28dfe44d9254342bd64752f0845519ab9
-	reverse(_L,[Num-Move|_Rest]).
+	reverse(_L,[NumMax-_Move|_Rest]),
+	%write([NumMax-_Move|_Rest]),nl,
+	%write(NumMax),nl,nl,
+	getBestMoves([NumMax-_Move|_Rest],_BestMoves,NumMax),
+	%write(_BestMoves),nl,
+	random_member(Move, _BestMoves).
+
+/*Prenche array de moves*/
+getBestMoves([], [], _Num).
+getBestMoves([Num-Move|Rest], Moves, NumMax):-
+	ite(Num = NumMax,
+		(getBestMoves(Rest, Mov, NumMax),
+			Moves = [Move|Mov]),
+		Moves = []).
 
 parserMovePC([], Board, Player, Simple, []).
 parserMovePC([Move|Rest], Board, Player, Simple, [Value-Move|ACC]):-
