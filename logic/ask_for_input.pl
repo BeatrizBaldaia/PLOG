@@ -33,8 +33,8 @@ defineDirection(CurrBoard, NewBoard, X-Y, Player):-
   	Player = 1,
   	validMan1Move(CurrBoard, X-Y, NewX-NewY, D),
   	validMan2Move(CurrBoard, X-Y, NewX-NewY, D)),
-    updateBoardSimpleMove(CurrBoard, NewBoard, X-Y, NewX-NewY, Player),
-    showBoard(NewBoard).
+  updateBoardSimpleMove(CurrBoard, NewBoard, X-Y, NewX-NewY, Player),
+  showBoard(NewBoard).
 
 defineDirection(CurrBoard, FinalBoard, X-Y, Player):-
   member(Player, [11, 22]), !,
@@ -60,9 +60,9 @@ casa na mesma linha de percurso
 */
 keepMoving(Direction):-
   read(D),
-  D = Direction ->  true;%para continuar a mover no ciclo repeat
-  D \= '\n' -> keepMoving(Direction);%introduziu a direcao errada
-  fail.
+  ite(D = Direction,
+    true,
+    ite(member(D, [1, 2, 3, 4, 6, 7, 8, 9]), keepMoving(Direction), fail)).
 
 
 /*
@@ -71,15 +71,17 @@ Movimento de captura
 
 selectCapturePiece(CurrBoard, Player, Moves, MaxCaptureNum, NewBoard) :-
   showBoard(CurrBoard),
+  ite(Player = 1, King is 11, King is 22),
   repeat,
   nl, write('Choose your piece.'), nl,
   write('Row (Number)'), read(Y),
   write('Column (Letter)'), read(L), convertLetterToNum(L, X),
-  findPiece(CurrBoard, X-Y, Player),
+  findPiece(CurrBoard, X-Y, P),
+  member(P, [Player, King]),
   removeCaptures(X-Y, 1, Moves, UpdatedMoves),
   \+length(UpdatedMoves, 0), !,
   nl, write('>>>>>>>>>>>>>>>>>>>>>MOVE PIECE<<<<<<<<<<<<<<<<<<<<<'), nl, nl, nl,
-  moveCapturePiece(CurrBoard, X-Y, Player, UpdatedMoves, MaxCaptureNum, 2, NewBoard).
+  moveCapturePiece(CurrBoard, X-Y, P, UpdatedMoves, MaxCaptureNum, 2, NewBoard).
 
 
 moveCapturePiece(CurrBoard,  X-Y, Player, Moves, MaxCaptureNum, CurrNum, NewBoard) :-
