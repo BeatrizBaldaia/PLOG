@@ -74,16 +74,10 @@ selectCapturePiece(CurrBoard, Player, Moves, MaxCaptureNum, NewBoard) :-
   ite(Player = 1, King is 11, King is 22),
   repeat,
   nl, write('Choose your piece.'), nl,
-<<<<<<< HEAD
   write('Row (Number)'), read(Y),
   write('Column (Letter)'), read(L), convertLetterToNum(L, X),
   findPiece(CurrBoard, X-Y, P),
   member(P, [Player, King]),
-=======
-  write('Row (Number)'), getInteger(Y),
-  write('Column (Letter)'), getLetter(L), convertLetterToNum(L, X),
-  findPiece(CurrBoard, X-Y, Player),
->>>>>>> fac07db1476240243a8fd0933dbf863a3c682e2f
   removeCaptures(X-Y, 1, Moves, UpdatedMoves),
   \+length(UpdatedMoves, 0), !,
   nl, write('>>>>>>>>>>>>>>>>>>>>>MOVE PIECE<<<<<<<<<<<<<<<<<<<<<'), nl, nl, nl,
