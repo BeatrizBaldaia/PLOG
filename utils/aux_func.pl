@@ -59,6 +59,7 @@ isInteger(53, 5).
 isInteger(54, 6).
 isInteger(55, 7).
 isInteger(56, 8).
+isInteger(57, 9).
 
 getLetter(R):-
 	repeat,

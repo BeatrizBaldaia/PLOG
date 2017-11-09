@@ -1,12 +1,3 @@
-/*game1Vs1(Board):-
-  displayPlayer1Turn,
-  selectPiece(Board, NewBoard1, 1),
-  \+gameOver(NewBoard1, 2) -> (
-  displayPlayer2Turn,
-  selectPiece(NewBoard1, NewBoard2, 2),
-  \+gameOver(NewBoard2, 1),
-  game1Vs1(NewBoard2)
-  ).*/
 :- dynamic gameState/2.
 
 game1Vs1(InitialBoard):-
@@ -16,7 +7,6 @@ game1Vs1(InitialBoard):-
 		once(playGame(Player, Board, NewPlayer, NewBoard1)),
 		once(promotedToKing(NewBoard1, NewBoard)),
 		assert(gameState(NewBoard, NewPlayer)),
-  %  assert(gameState(NewBoard1, NewPlayer)),
 		gameOver(NewBoard, NewPlayer).
 
 playGame(Player, CurrBoard, NewPlayer, NewBoard):-
@@ -31,7 +21,7 @@ mandatoryCapture(CurrBoard, NewBoard, Player):-
 	reverse(LSorted, LInverted),
   nth1(1, LInverted, NCaptures-BestMove),
   getBestCaptures(LInverted, Best, [], NCaptures),
-  write('Best:  '), write(Best), nl, nl, nl,
+  %write('Best:  '), write(Best), nl, nl, nl,
   ite(NCaptures = 0,
 		selectPiece(CurrBoard, NewBoard, Player),
 		(nl, nl, write('WARNING: You\'re forced to capture'), nl, nl,
@@ -54,6 +44,7 @@ playGamePC(Player, Board, NewPlayer, NewBoard):-
   ite(Player = 1,(displayPlayer1Turn, NewPlayer = 2),(displayPlayer2Turn, NewPlayer = 1)),
   showBoard(Board),
   validMovesPC(Board, Player, Moves, Simple),
+  write(Moves),nl,
   level(Level),
   chooseMovePC(Moves, Move, Level, Board, Player, Simple),
   applyMovePC(Board, NewBoard, Move, Player, Simple).
