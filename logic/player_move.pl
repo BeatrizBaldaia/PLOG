@@ -11,3 +11,14 @@ validMovePC(Board, Player, [X-Y,NewX-NewY]):-
 	validKingMove(Board, X-Y, NewX-NewY, 11, D),
 	validKingMove(Board, X-Y, NewX-NewY, 22, D)).
 
+validMovePC(Board, Player, [X-Y,NewX-NewY]):-
+	ite(Player = 1,
+	validKeepMoving(Board, X-Y, NewX-NewY, 11, D),
+	validKeepMoving(Board, X-Y, NewX-NewY, 22, D)).
+	
+validKeepMoving(Board, X-Y, NewX-NewY, Player, D):-
+	validKingMove(Board, X-Y, NewX-NewY, Player, D).
+validKeepMoving(Board, X-Y, NewX-NewY, Player, D):-
+	validKingMove(Board, X-Y, X1-Y2, Player, D),
+	updateBoardSimpleMove(Board, NewBoard, X-Y, X1-Y2, Player),
+	validKeepMoving(NewBoard, X1-Y2, NewX-NewY, Player, D).
