@@ -42,17 +42,17 @@ defineDirection(CurrBoard, FinalBoard, X-Y, Player):-
   write('Define direction'),
   getInteger(D),
   member(D, [1, 2, 3, 4, 6, 7, 8, 9]),
-  write('Define Directio: '),write(D),nl,
+  %write('Define Directio: '),write(D),nl,
   keepMovingKing(CurrBoard, FinalBoard, X-Y, Player, D).
 
 keepMovingKing(CurrBoard, FinalBoard, X-Y, Player, D):-
   validKingMove(CurrBoard, X-Y, NewX-NewY, Player, D),
-  write('Movimento Valido: '), write(D),nl,
+  %write('Movimento Valido: '), write(D),nl,
 	updateBoardSimpleMove(CurrBoard, NewBoard, X-Y, NewX-NewY, Player),
   write('\33\[2J'),
   ite(Player = 11, displayPlayer1Turn, displayPlayer2Turn),
   showBoard(NewBoard),
-  write(NewX-NewY),nl,
+  %write(NewX-NewY),nl,
   ite(validKingMove(NewBoard, NewX-NewY, X1-Y1, Player, D),
    (ite(
 	    keepMoving(D),
