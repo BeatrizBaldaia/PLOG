@@ -24,6 +24,9 @@ selectPiece(CurrBoard, NewBoard, PlayerNum):-
 */
 defineDirection(CurrBoard, NewBoard, X-Y, Player):-
   member(Player, [1, 2]), !,
+  write('\33\[2J'),
+  ite(member(Player, [1, 11]), displayPlayer1Turn, displayPlayer2Turn),
+  showBoard(CurrBoard),
   nl, write('>>>>>>>>>>>>>MOVE PIECE<<<<<<<<<<<<<<'), nl, nl, nl,
   repeat,
   write('Row (Number)'), getInteger(Y1),
@@ -44,6 +47,9 @@ defineDirection(CurrBoard, NewBoard, X-Y, Player):-
 */
 defineDirection(CurrBoard, FinalBoard, X-Y, Player):-
   member(Player, [11, 22]), !,
+  write('\33\[2J'),
+  ite(member(Player, [1, 11]), displayPlayer1Turn, displayPlayer2Turn),
+  showBoard(CurrBoard),
   nl, write('>>>>>>>>>>>>>MOVE PIECE<<<<<<<<<<<<<<'), nl, nl, nl,
   repeat,
   write('Define direction'),
