@@ -14,12 +14,12 @@
 :-include('logic/player_capture.pl').
 :-include('logic/player_king_move.pl').
 :-include('logic/player_man_move.pl').
-:-include('logic/player_move.pl').
-:-include('logic/verifications.pl').
-:-include('logic/player_man_capture.pl').
+:-include('logic/player_PC_move.pl').
+:-include('logic/promotion.pl').
+:-include('logic/player_man_king_capture.pl').
 
 :-include('utils/init.pl').
 :-include('utils/map_positions.pl').
 :-include('utils/aux_func.pl').
 
-startExample :- assert(level(1)),chooseGameMode.
+dameo :- assert(level(1)),chooseGameMode.

@@ -1,4 +1,6 @@
-/**/
+/*
+*Verifica se o PC e obrigado a capturar
+*/
 mandatoryCapturePC(Board, Player, Moves):-
 	setof(Num-X-Y-Move,captureNumber(Board, X-Y, Num, Player, Move),_L),
 	reverse(_L,[Num-X-Y-Move|Rest]),
@@ -27,7 +29,7 @@ captureNumber(OldBoard, X-Y, Num, Player,[X-Y|Next]):-
 	Num is NNum+1.
 
 /*
-Predicado para verificar a captura de uma peça
+*Predicado para verificar a captura de uma peca
 */
 possibleCapture(OldBoard, X-Y, NewBoard, NewX-NewY, Player):-
 ite(Player = 1,

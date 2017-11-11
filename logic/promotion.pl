@@ -22,11 +22,9 @@ promotedToKing2(OldBoard, NewBoard):-
 /*
 Verificacao de fim de jogo
 */
-%TODO
+
 gameOver(OldBoard, Player):-
    validMovesPC(OldBoard, Player, Moves, Simple),
-   ite(Moves = [], true, fail).
-/*
-gameOver(OldBoard, Player):- findPiece(OldBoard, _X-_Y, Player), validMoves(OldBoard, Player, Moves), !, fail.
-gameOver(_OldBoard, _Player).
-*/
+   ite(Moves = [], true, fail),
+	 ite(Player = 1, displayWinner2, displayWinner1),
+	 sleep(5).

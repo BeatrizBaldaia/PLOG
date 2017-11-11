@@ -21,6 +21,8 @@ showPiece(X):- X = 2,
 	write('O').
 showPiece(X):- X = 0,
 	write(' ').
+showPiece(X):- X = 3,
+	write('X').
 showPiece(X):- X = 11,
 	put_code(178).
 showPiece(X):- X = 22,

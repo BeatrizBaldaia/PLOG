@@ -5,7 +5,7 @@ chooseGameMode:-
 selectOption:-
   getInteger(Option),
   Option > 0,
-  Option < 5,
+  Option < 6,
   startPlay(Option).
 
 
@@ -27,7 +27,10 @@ startPlay(4):-
 	Level = 2,
 	Level = 1),
   assert(level(Level)),
+  write('\33\[2J'),
   ite(Level = 1,
-	write('Playing in random level!'),
-	write('Playing in difficult level!')),
+	write('Playing easy level!'),
+	write('Playing medium level!')),
   chooseGameMode.
+
+  startPlay(5).

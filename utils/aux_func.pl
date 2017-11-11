@@ -19,33 +19,7 @@ getBestCaptures([N-L | T], Best, Aux, NCaptures) :-
 		append(Aux, L, Aux2), getBestCaptures(T, Best, Aux2, NCaptures)
 	);
 	Best = Aux.
-/**
-read(Input) :-
-	get_code(Ch),
-	getAllChars(Ch, CharsList),
-	name(Input, CharsList).
 
-getAllChars(10, []).
-getAllChars(13, []).
-getAllChars(Ch, [Ch | OtherChars]) :-
-	get_code(NewCh),
-	getAllChars(NewCh, OtherChars).
-
-read(Integer) :-
-	get_code(Ch),
-	Digit is (Ch - 48),
-	getAllNumbers(Digit, Integer).
-
-getAllNumbers(Aux, Result) :-
-	get_code(Ch),
-	ite((Ch == 13 ;Ch == 10),
-	Result is Aux,
-		(
-		 NewDigit is (Ch - 48),
-		 NewAux is (Aux * 10 + NewDigit),
-		 getAllNumbers(NewAux, Result)
-		)
-	 ).*/
 
 getInteger(R):-
 	repeat,
@@ -81,4 +55,3 @@ isLetter(69, 'E').
 isLetter(70, 'F').
 isLetter(71, 'G').
 isLetter(72, 'H').
-

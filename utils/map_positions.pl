@@ -1,13 +1,27 @@
+
+/*
+*Aplicar movimento sem capturar
+*/
 applyMovePC(CurrBoard, NewBoard, [X-Y,NewX-NewY], Player, yes):-
   updateBoardSimpleMove(CurrBoard, NewBoard, X-Y, NewX-NewY, Player).
 
+/*
+*Movimento de captura terminado
+*(capturou todas as pecas possiveis)
+*/
 applyMovePC(NewBoard, NewBoard, [X-Y],Player,no).
 
+/*
+*Aplicar movimento com capturar
+*/
 applyMovePC(CurrBoard, NewBoard, [X-Y,NewX-NewY|Rest],Player, no):-
 	updateBoardSimpleMove(CurrBoard, _updateBoard, X-Y, NewX-NewY, Player),
 	takeAdversary(X-Y, NewX-NewY, _updateBoard, _updateBoard1),
 	applyMovePC(_updateBoard1,  NewBoard, [NewX-NewY|Rest],Player, no).
 
+/*
+*Predicado para apagar o adversario capturado
+*/
 takeAdversary(X-Y, NewX-NewY, CurrBoard, NewBoard):-
 	ite(X = NewX,
 		(ite(NewY > Y, Y1 is NewY-1, Y1 is NewY+1),
@@ -33,7 +47,7 @@ convertToDirection(CurrBoard, Player, X-Y, X1-Y1, D):-
   ite(Y = Y1,
       (ite(X > X1, isDirection4(CurrBoard, X-Y, X1-Y1, Player, D), isDirection6(CurrBoard, X-Y, X1-Y1, Player, D))),
       ite(X = X1,
-        (write('movimento vertical'), nl, ite(Y > Y1, isDirection8(CurrBoard, X-Y, X1-Y1, Player, D), isDirection2(CurrBoard, X-Y, X1-Y1, Player, D))),
+        ite(Y > Y1, isDirection8(CurrBoard, X-Y, X1-Y1, Player, D), isDirection2(CurrBoard, X-Y, X1-Y1, Player, D)),
         ite(X1 > X,
           (ite(Y1 > Y, isDirection3(CurrBoard, X-Y, X1-Y1, Player, D), isDirection9(CurrBoard, X-Y, X1-Y1, Player, D))),
           (ite(Y1 > Y, isDirection1(CurrBoard, X-Y, X1-Y1, Player, D), isDirection7(CurrBoard, X-Y, X1-Y1, Player, D)))
@@ -193,7 +207,7 @@ updateBoardSimpleMove(OldBoard, NewBoard, X-Y, NewX-NewY, Player):-
 	putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
 	putPiece(_UpdatedBoard, NewBoard, NewX-NewY, King).
 
-updateBoardCaptureMove(OldBoard, NewBoard, X-Y, NewX-NewY, Player):-
+updateBoardCaptureMove(OldBoard, NewBoard, X-Y, NewX-NewY, Player, Mark):-
   putPiece(OldBoard, _UpdatedBoard, X-Y, 0),
   ite(X = NewX,
     X1 is X,
@@ -203,5 +217,5 @@ updateBoardCaptureMove(OldBoard, NewBoard, X-Y, NewX-NewY, Player):-
     Y1 is Y,
     (ite(Y > NewY, Y1 is NewY + 1, Y1 is NewY - 1))),
 
-  putPiece(_UpdatedBoard, _UpdatedBoard2, X1-Y1, 0),%apagar o capturado
+  putPiece(_UpdatedBoard, _UpdatedBoard2, X1-Y1, Mark),%3 = marca o capturado; 0 = apaga o capturado
   putPiece(_UpdatedBoard2, NewBoard, NewX-NewY, Player).
