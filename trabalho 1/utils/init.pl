@@ -11,7 +11,7 @@ isKing(22).
 isKing(11).
 
 
-
+/*
 create_board(Board):-
   Board = [
   [1,1,1,1,1,1,1,1],
@@ -23,10 +23,10 @@ create_board(Board):-
   [0,2,2,2,2,2,2,0],
   [2,2,2,2,2,2,2,2]
   ].
-
+*/
 
 /*Tabuleiro para testes*/
-/*  create_board(Board):-
+  create_board(Board):-
     Board = [
     [0,0,0,0,0,0,22,0],
     [0,0,0,2,0,0,0,0],
@@ -36,4 +36,4 @@ create_board(Board):-
     [0,0,22,0,2,0,0,0],
     [0,0,0,2,0,0,0,0],
     [0,0,0,11,0,0,0,0]
-    ].*/
+    ].
