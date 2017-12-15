@@ -1,8 +1,6 @@
 :- use_module(library(clpfd)).
 :- use_module(library(lists)).
-showResult([]).
-showResult([H|T]):-
-	write(H),nl,showResult(T).
+
 calculate_road(Board, Dim, Answer) :-
   length(Answer, Dim),
   createBoard(Answer, Dim),
@@ -89,9 +87,28 @@ minesweeper(X-Y-V, ListofLists, Dim):-
 	ite(X = Dim, V8 = 0, element(Pos2Plus, ListofLists, V8)))),
   V #= V1 + V2 + V3 + V4 + V5 + V6 + V7 + V8.
   
-%calculate_road([2-2-5,5-2-5,3-3-3,2-5-3,6-6-2],6,RES),showResult(RES).
-%calculate_road([2-2-5,5-2-5,3-3-3,2-5-3],6,RES),showResult(RES).
+%calculate_road([2-2-5,5-2-5,3-3-3,2-5-3,6-6-2],6,RES),showBoard(RES).
+%calculate_road([2-2-5,5-2-5,3-3-3,2-5-3],6,RES),showBoard(RES).
 ite(If, Then, _):- If,!,Then.
 ite(_,_,Else):- Else.
 
-%calculate_road([2-4-5,3-3-4,3-7-4,3-10-4,4-2-4,5-5-4,5-12-4,6-8-5,8-6-4,9-2-4,9-9-4,10-3-3,11-4-5,11-7-3,11-11-4],13,RES),showResult(RES).
+%calculate_road([2-4-5,3-3-4,3-7-4,3-10-4,4-2-4,5-5-4,5-12-4,6-8-5,8-6-4,9-2-4,9-9-4,10-3-3,11-4-5,11-7-3,11-11-4],13,RES),showBoard(RES).
+
+
+/*Predicado Para Mostrar o Tabuleiro*/
+showBoard(X):- nl,showRow(X, 1).
+showRow(X, Y):- X = [].
+showRow(X, Y):- X = [H|R],
+	Yn is (Y + 1),
+	write('--------------------------------------------------------------------------------------------'), nl,
+	showRowValues(H), nl,
+	showRow(R, Yn).
+showRowValues(X):- X = [] , write(' |').
+showRowValues(X):- X = [H|R],
+	write(' | '),
+	showPiece(H),
+	showRowValues(R).
+showPiece(X):- X = 1,
+	put_code(219).
+showPiece(X):- X = 0,
+	write(' ').
