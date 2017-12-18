@@ -8,9 +8,13 @@ ite(_,_,Else):- Else.
 calculate_road(Board, Dim, Answer) :-
   length(Answer, Dim),
   createBoard(Answer, Dim),
+  write("criour board"), nl,
   append(Answer, Res),%Res é uma lista com todos os elementos da matriz Answer
+  write("fez append"), nl,
   checkNumberedPositions(Board,Res,Dim),
+  write("verificou casas adjacentes as numeradas"), nl,
   checkIntersectedRoads(Res, Dim),
+  write("verificou caminhos intersetados"), nl,
   labeling([], Res).
 
 % Cria uma matriz Dim x Dim
@@ -65,8 +69,8 @@ checkNextColumn(Res, Dim, Y, X):-
   VDiagonal #= ValueUpLeft + ValueUpRight + ValueDownLeft + ValueDownRight,
   %((Elem #= 1 #/\ VSides #= 2 #/\ VDiagonal #= 0)#\/ (Elem #= 0)),
   ((Elem #= 1 #/\ VSides #= 2)#\/ (Elem #= 0)),
-  ((Elem #= 1 #/\ ValueDownRight #= 1) #=> (ValueRight #= 1 #\ ValueDownLeft #= 1)),
-  ((Elem #= 0 #/\ ValueDownRight #= 0) #=> (ValueRight #= 0 #\/ ValueDownLeft #= 0)),
+  ((Elem #= 1 #/\ ValueDownRight #= 1) #=> (ValueRight #= 1 #\ ValueDown #= 1)),
+  ((Elem #= 0 #/\ ValueDownRight #= 0) #=> (ValueRight #= 0 #\/ ValueDown #= 0)),
   X1 is X + 1,
   checkNextColumn(Res, Dim, Y, X1).
 
