@@ -89,7 +89,7 @@ checkNumberedPositions([H|R], QueueBoard, Dim):-
 
 checkAdjacentValues(X-Y-V, QueueBoard, Dim):-
   getBoardValues(X, Y, QueueBoard, Dim, Elem, Pos, ValueUpLeft, ValueUp, ValueUpRight, ValueLeft, ValueRight, ValueDownLeft, ValueDown, ValueDownRight),
-
+  Elem #= 0,
   V #= ValueUpLeft + ValueUp + ValueUpRight + ValueLeft + ValueRight + ValueDownLeft + ValueDown + ValueDownRight.
 
 %['trace_rode.pl'],calculate_road([2-2-5,5-2-5,3-3-3,2-5-3,6-6-2]-[],6,RES),showBoard(RES).
