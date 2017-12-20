@@ -1,12 +1,11 @@
 :- dynamic pos/1, index/1.
 
-savePosition(X, Y, 0).
-savePosition(X, Y, 1) :-
-  retract(pos(Pos)),
-  append(Pos, [X-Y], NewPos),
-  assert(pos(NewPos)).
-
-uniqueRoad(Result) :-
+uniqueRoad(BoardQueue, Dim) :-
+  retractall(pos(_)),
+  retractall(index(_)),
+  assert(pos([])),
+  assert(index([1])),
+  checkResultValues(BoardQueue, Dim, 1),
   hasAdjacent,
   pos(Pos),
   index(I),
@@ -14,10 +13,26 @@ uniqueRoad(Result) :-
   length(I, FinalSize),
   write('TotalSize = '), write(TotalSize), nl,
   write('FinalSize = '), write(FinalSize), nl,
-  ite(TotalSize = FinalSize,
-    Result is 1,
-    Result is 0
-  ).
+  write('------------------------------------'), nl, nl,
+  retract(pos(_)),
+  retract(index(_)),
+  TotalSize = FinalSize.
+
+checkResultValues([], _, _).
+checkResultValues([H|T], Dim, It) :-
+  AuxX is It mod Dim,
+  AuxY is It//Dim,
+  ite(AuxX = 0, (X is Dim, Y is AuxY), (X is AuxX, Y is AuxY + 1)),
+  NewIt is It + 1,
+  %ite((X = 13, Y = 3), (write('VALOR DA CASA (13, 3) = '), write(H), nl, nl), true),
+  savePosition(X, Y, H),
+  checkResultValues(T, Dim, NewIt).
+
+savePosition(X, Y, 0).
+savePosition(X, Y, 1) :-
+  retract(pos(Pos)),
+  append(Pos, [X-Y], NewPos),
+  assert(pos(NewPos)).
 
 hasAdjacent :-
   index(IndexList), pos(Pos),

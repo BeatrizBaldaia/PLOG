@@ -4,6 +4,7 @@
 :-include('calculate_values.pl').
 :-include('paint_constraint.pl').
 :-include('print.pl').
+:-include('simple_separated_roads_constraint.pl').
 :-include('test_result.pl').
 
 ite(If, Then, _):- If,!,Then.
@@ -13,32 +14,25 @@ ite(_,_,Else):- Else.
 calculate_road(Board-Zeros, Dim, Answer) :-
   length(Answer, Dim),
   createBoard(Answer, Dim),
-  write('criour board'), nl,
   append(Answer, Res),%Res é uma lista com todos os elementos da matriz Answer
-  write('fez append'), nl,
   checkNumberedPositions(Board,Res,Dim),
   checkZeroPositions(Zeros,Res,Dim),
-  write('verificou casas adjacentes as numeradas'), nl,
   checkIntersectedRoads(Res, Dim),
-  write('verificou caminhos intersetados'), nl,
-  %checkOneRoad(Res, Dim, AuxBoard),
-  write('verificou um caminho'), nl,
-  %write(AuxBoard),
+  checkSimpleSeparatedRoads(Answer),
   labeling([], Res).
-  %write(AuxBoard),nl,nl,
-  %showBoard(Answer).
-  %teste(AuxBoard).
-  %nl,  write(AuxBoard).
 
-teste(AuxBoard):- !,
-  nth1(Pos, AuxBoard, 3),!,
-  ground(AuxBoard).
+%funcao principal com teste apos labeling
+calculate_road_testing(Board-Zeros, Dim, Answer) :-
+  length(Answer, Dim),
+  createBoard(Answer, Dim),
+  append(Answer, Res),%Res é uma lista com todos os elementos da matriz Answer
+  checkNumberedPositions(Board,Res,Dim),
+  checkZeroPositions(Zeros,Res,Dim),
+  checkIntersectedRoads(Res, Dim),
+  checkSimpleSeparatedRoads(Answer),
+  labeling([], Res),
+  uniqueRoad(Res, Dim).
 
-checkOneRoad(Res, Dim, Board):-
-  BoardDimention is Dim * Dim,
-  length(Board, BoardDimention),
-  %domain(Board, 0, 3),
-  paint(Board, Res, Dim).
 
 % Cria uma matriz Dim x Dim
 createBoard([H],Dim):-
@@ -65,7 +59,6 @@ checkNextColumn(Res, Dim, Y, X):-
 
   VSides #= ValueLeft + ValueRight + ValueUp + ValueDown,
   VDiagonal #= ValueUpLeft + ValueUpRight + ValueDownLeft + ValueDownRight,
-  %((Elem #= 1 #/\ VSides #= 2 #/\ VDiagonal #= 0)#\/ (Elem #= 0)),
   ((Elem #= 1 #/\ VSides #= 2)#\/ (Elem #= 0)),
   ((Elem #= 1 #/\ ValueDownRight #= 1) #=> (ValueRight #= 1 #\ ValueDown #= 1)),
   ((Elem #= 0 #/\ ValueDownRight #= 0) #=> (ValueRight #= 0 #\/ ValueDown #= 0)),
@@ -89,7 +82,7 @@ checkNumberedPositions([H|R], QueueBoard, Dim):-
 
 checkAdjacentValues(X-Y-V, QueueBoard, Dim):-
   getBoardValues(X, Y, QueueBoard, Dim, Elem, Pos, ValueUpLeft, ValueUp, ValueUpRight, ValueLeft, ValueRight, ValueDownLeft, ValueDown, ValueDownRight),
-
+  Elem #= 0,
   V #= ValueUpLeft + ValueUp + ValueUpRight + ValueLeft + ValueRight + ValueDownLeft + ValueDown + ValueDownRight.
 
 %['trace_rode.pl'],calculate_road([2-2-5,5-2-5,3-3-3,2-5-3,6-6-2]-[],6,RES),showBoard(RES).
