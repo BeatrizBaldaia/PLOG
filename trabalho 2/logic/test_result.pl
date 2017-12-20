@@ -24,7 +24,6 @@ checkResultValues([H|T], Dim, It) :-
   AuxY is It//Dim,
   ite(AuxX = 0, (X is Dim, Y is AuxY), (X is AuxX, Y is AuxY + 1)),
   NewIt is It + 1,
-  %ite((X = 13, Y = 3), (write('VALOR DA CASA (13, 3) = '), write(H), nl, nl), true),
   savePosition(X, Y, H),
   checkResultValues(T, Dim, NewIt).
 
