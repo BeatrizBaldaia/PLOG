@@ -10,6 +10,7 @@
 :-include('print.pl').
 :-include('simple_separated_roads_constraint.pl').
 :-include('test_result.pl').
+:-include('statistic.pl').
 
 ite(If, Then, _):- If,!,Then.
 ite(_,_,Else):- Else.
@@ -23,7 +24,12 @@ calculate_road(Board-Zeros, Dim, Answer) :-
   checkZeroPositions(Zeros,Res,Dim),
   checkIntersectedRoads(Res, Dim),
   checkSimpleSeparatedRoads(Answer),
-  labeling([], Res).
+  reset_timer,
+  labeling([], Res),
+  print_time,
+  fd_statistics.
+
+
 
 %funcao principal com teste apos labeling
 calculate_road_testing(Board-Zeros, Dim, Answer) :-
