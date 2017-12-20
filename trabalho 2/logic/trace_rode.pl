@@ -2,7 +2,11 @@
 :- use_module(library(lists)).
 
 :-include('calculate_values.pl').
-:-include('paint_constraint.pl').
+:-include('create_board.pl').
+:-include('intersection_constraint.pl').
+:-include('marked_positions_constraint.pl').
+:-include('matrix_parser.pl').
+:-include('numbered_positions_neighbors_constraint.pl').
 :-include('print.pl').
 :-include('simple_separated_roads_constraint.pl').
 :-include('test_result.pl').
@@ -33,57 +37,6 @@ calculate_road_testing(Board-Zeros, Dim, Answer) :-
   labeling([], Res),
   uniqueRoad(Res, Dim).
 
-
-% Cria uma matriz Dim x Dim
-createBoard([H],Dim):-
-  length(H, Dim),
-  domain(H,0,1).
-createBoard([H|Answer], Dim):-
-  length(H, Dim),
-  domain(H,0,1),
-  createBoard(Answer, Dim).
-
-%verifica se nao ha dois caminhos distintos com um vertice e comum
-checkIntersectedRoads(Res, Dim):-
-	checkNextRow(Res, Dim, 1).
-
-checkNextRow(_, Dim, Y):- Dim + 1 =:= Y.
-checkNextRow(Res, Dim, Y):-
-	checkNextColumn(Res, Dim, Y, 1),
-	Y1 is Y + 1,
-	checkNextRow(Res, Dim, Y1).
-
-checkNextColumn(_, Dim,_, X):- Dim + 1 =:= X. %chegou ao fim da linha
-checkNextColumn(Res, Dim, Y, X):-
-  getBoardValues(X, Y, Res, Dim, Elem, Pos, ValueUpLeft, ValueUp, ValueUpRight, ValueLeft, ValueRight, ValueDownLeft, ValueDown, ValueDownRight),
-
-  VSides #= ValueLeft + ValueRight + ValueUp + ValueDown,
-  VDiagonal #= ValueUpLeft + ValueUpRight + ValueDownLeft + ValueDownRight,
-  ((Elem #= 1 #/\ VSides #= 2)#\/ (Elem #= 0)),
-  ((Elem #= 1 #/\ ValueDownRight #= 1) #=> (ValueRight #= 1 #\ ValueDown #= 1)),
-  ((Elem #= 0 #/\ ValueDownRight #= 0) #=> (ValueRight #= 0 #\/ ValueDown #= 0)),
-  X1 is X + 1,
-  checkNextColumn(Res, Dim, Y, X1).
-
-checkZeroPositions([], _, _).
-checkZeroPositions([H|R], QueueBoard, Dim):-
-  checkZero(H, QueueBoard, Dim),
-  checkZeroPositions(R, QueueBoard, Dim).
-checkZero(X-Y, QueueBoard, Dim):-
-    Pos #= (Y-1) * Dim + X,%posicao correspondente na QueueBoard
-    element(Pos, QueueBoard, 0).
-
-%verifica se os arredores de uma posicao numerada tem o numero certo de casas pintadas
-checkNumberedPositions([], _, _).
-checkNumberedPositions([H|R], QueueBoard, Dim):-
-  checkAdjacentValues(H, QueueBoard, Dim),
-  checkNumberedPositions(R, QueueBoard, Dim).
-
-
-checkAdjacentValues(X-Y-V, QueueBoard, Dim):-
-  getBoardValues(X, Y, QueueBoard, Dim, Elem, Pos, ValueUpLeft, ValueUp, ValueUpRight, ValueLeft, ValueRight, ValueDownLeft, ValueDown, ValueDownRight),
-  Elem #= 0,
-  V #= ValueUpLeft + ValueUp + ValueUpRight + ValueLeft + ValueRight + ValueDownLeft + ValueDown + ValueDownRight.
 
 %['trace_rode.pl'],calculate_road([2-2-5,5-2-5,3-3-3,2-5-3,6-6-2]-[],6,RES),showBoard(RES).
 %['trace_rode.pl'],calculate_road([2-2-5,5-2-5,3-3-3,2-5-3]-[],6,RES),showBoard(RES).
