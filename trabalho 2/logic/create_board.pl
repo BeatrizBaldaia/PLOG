@@ -1,5 +1,5 @@
 %['create_board.pl'],createBoard(4,B-_,A).
-%['create_board.pl'],createBoard(20,B-_,A).
+%['trace_rode.pl'],createBoard(20,K,A).
 :-use_module(library(random)).
 createBoard(Dim, Board-[],Square):-
   length(Square, Dim),
@@ -12,7 +12,8 @@ createBoard(Dim, Board-[],Square):-
   repeat,
   random(LowerBound, UpperBound, NumberOfRodeBlocks),
   placeRodeBlocks(NumberOfRodeBlocks, AuxList),
-  placeClues(Board, Dim, AuxList, Dim),
+  NumberOfClues is Dim * Dim // 7,
+  placeClues(Board, NumberOfClues, AuxList, Dim),
   labeling([],AuxList).
 
 placeRodeBlocks(0,_).

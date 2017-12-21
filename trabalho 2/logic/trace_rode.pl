@@ -25,7 +25,7 @@ calculate_road(Board-Zeros, Dim, Answer) :-
   checkIntersectedRoads(Res, Dim),
   checkSimpleSeparatedRoads(Answer),
   reset_timer,
-  labeling([], Res),
+  labeling([leftmost,bisect], Res),
   print_time,
   fd_statistics.
 
@@ -40,8 +40,11 @@ calculate_road_testing(Board-Zeros, Dim, Answer) :-
   checkZeroPositions(Zeros,Res,Dim),
   checkIntersectedRoads(Res, Dim),
   checkSimpleSeparatedRoads(Answer),
+  reset_timer,
   labeling([], Res),
-  uniqueRoad(Res, Dim).
+  uniqueRoad(Res, Dim),
+  print_time,
+  fd_statistics.
 
 
 %['trace_rode.pl'],calculate_road([2-2-5,5-2-5,3-3-3,2-5-3,6-6-2]-[],6,RES),showBoard(RES, [2-2-5,5-2-5,3-3-3,2-5-3,6-6-2]-[],6).
