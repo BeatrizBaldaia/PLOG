@@ -1,3 +1,5 @@
+%verifica a transicao de uma coluna/linha limpa (so casas brancas)
+%para uma coluna/linha com pelo menos uma casa preta
 checkClearLine([], _, 0).
 checkClearLine([Row|OtherRows], State, Result):-
   count(1, Row, #=, Count),

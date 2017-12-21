@@ -1,3 +1,4 @@
+%obtem os valores das casas visinhas a casa de posicao (X, Y)
 getBoardValues(X, Y, Res, Dim, Elem, Pos, ValueUpLeft, ValueUp, ValueUpRight, ValueLeft, ValueRight, ValueDownLeft, ValueDown, ValueDownRight) :-
   Pos #= (Y-1) * Dim + X,
   Left #= Pos - 1,

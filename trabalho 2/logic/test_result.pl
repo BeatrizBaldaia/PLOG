@@ -1,5 +1,6 @@
 :- dynamic pos/1, index/1.
 
+%falha se houver mais do que um caminho fechado
 uniqueRoad(BoardQueue, Dim) :-
   retractall(pos(_)),
   retractall(index(_)),
@@ -18,6 +19,7 @@ uniqueRoad(BoardQueue, Dim) :-
   retract(index(_)),
   TotalSize = FinalSize.
 
+%percorre o tabuleiro resultante
 checkResultValues([], _, _).
 checkResultValues([H|T], Dim, It) :-
   AuxX is It mod Dim,
@@ -27,6 +29,7 @@ checkResultValues([H|T], Dim, It) :-
   savePosition(X, Y, H),
   checkResultValues(T, Dim, NewIt).
 
+%guarda a posicao das casas a preto (do caminho)
 savePosition(X, Y, 0).
 savePosition(X, Y, 1) :-
   retract(pos(Pos)),
