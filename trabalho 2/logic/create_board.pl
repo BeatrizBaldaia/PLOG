@@ -1,5 +1,6 @@
 %['create_board.pl'],createBoard(4,B-_,A).
 %['trace_rode.pl'],createBoard(20,K,A).
+%createBoard(9,K,A), calculate_road(K,9,RES),showBoard(RES, K,9).
 :-use_module(library(random)).
 createBoard(Dim, Board-[],Square):-
   length(Square, Dim),
