@@ -23,7 +23,7 @@ showPiece(X):- X = 9,!,
 	%('A').
 	put_code(9209).
 showPiece(X):- write(X).
-writeSlash(0).
+writeSlash(0):-!.
 writeSlash(Dim):-
 	write('----'),
 	ND is Dim - 1,
@@ -31,11 +31,8 @@ writeSlash(Dim):-
 createPrintBoard(Solution,Clues-Zeros,Dim,Square):-
 	length(Square, Dim),
   createPBoard(Square, Dim),
-	write('ZEROS'),nl,
 	putZeros(Square,Zeros),
-	write('Clues'),nl,
 	putClues(Square,Clues),
-	write('Pata'),nl,
 	putPath(Solution,Square).
 
 putPathLin([],[]).
