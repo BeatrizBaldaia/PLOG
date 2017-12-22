@@ -1,5 +1,5 @@
 %['create_board.pl'],createBoard(4,B-_,A).
-%['trace_rode.pl'],createBoard(20,K,A).
+%['trace_road.pl'],createBoard(20,K,A).
 %createBoard(9,K,A), calculate_road(K,9,RES),showBoard(RES, K,9).
 :-use_module(library(random)).
 createBoard(Dim, Board-[],Square):-
@@ -11,17 +11,17 @@ createBoard(Dim, Board-[],Square):-
   LowerBound is Dim // 2,
   UpperBound is 2 * Dim,
   repeat,
-  random(LowerBound, UpperBound, NumberOfRodeBlocks),
-  placeRodeBlocks(NumberOfRodeBlocks, AuxList),
+  random(LowerBound, UpperBound, NumberOfRoadBlocks),
+  placeRoadBlocks(NumberOfRoadBlocks, AuxList),
   NumberOfClues is Dim * Dim // 7,
   placeClues(Board, NumberOfClues, AuxList, Dim),
   labeling([],AuxList).
 
-placeRodeBlocks(0,_).
-placeRodeBlocks(Number, Board):-
+placeRoadBlocks(0,_).
+placeRoadBlocks(Number, Board):-
   random_member(1, Board),
   NextNumber is Number - 1,
-  placeRodeBlocks(NextNumber, Board).
+  placeRoadBlocks(NextNumber, Board).
 
 placeClues([], 0, _, _).
 placeClues([X-Y-V|Old], Number, AuxList, BoardDimention):-

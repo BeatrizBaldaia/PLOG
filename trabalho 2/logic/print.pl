@@ -1,5 +1,5 @@
 
-%['trace_rode.pl'],calculate_road([2-2-5,5-2-5,3-3-3,2-5-3,6-6-2]-[5-4],6,RES),showBoard(RES,[2-2-5,5-2-5,3-3-3,2-5-3,6-6-2]-[5-4],6).
+%['trace_road.pl'],calculate_road([2-2-5,5-2-5,3-3-3,2-5-3,6-6-2]-[5-4],6,RES),showBoard(RES,[2-2-5,5-2-5,3-3-3,2-5-3,6-6-2]-[5-4],6).
 /*Predicado Para Mostrar o Tabuleiro*/
 showBoard(Solution,Board-Zeros,Dim):- !,createPrintBoard(Solution,Board-Zeros,Dim,X),nl,showRow(X, 1,Dim).
 showRow(X, Y,Dim):- X = [],!.
